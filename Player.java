@@ -28,12 +28,24 @@ public class Player {
         return name;
     }
 
-    public int getHealth() {
+    public int checkHealth() {
         return health;
     }
 
-    public int getStatus() {
+    public int checkStatus() {
         return status;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void updateStatus(int status){
