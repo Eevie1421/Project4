@@ -2,14 +2,20 @@ public abstract class Enemy {
     private int health;
     private int maxHealth;
     private boolean status;
+    private int enemyAc;
 
     public Enemy(int maxHealth){
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         status = true;
+        enemyAc = 10;
     }
     public Enemy(){
         this(10);
+    }
+
+    public int getEnemyAc() {
+        return enemyAc;
     }
 
     public void setHealth(int health) {
