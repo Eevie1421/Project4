@@ -62,4 +62,7 @@ public class Player {
             health = maxHealth;
         }
     }
+    public void pickItem(Item item){
+
+    }
 }
