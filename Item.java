@@ -11,27 +11,37 @@ public class Item {
     public Item(int typeNum){
         this.typeNum = typeNum;
         if(typeNum == 0){
-            type = "key";
+            type = "Key";
             uses = 1;
         }
         else if(typeNum == 1){
-            type = "health pot";
+            type = "Health pot";
             uses = 2;
         }
     }
 
     /**
-     * Key - If the item is a key it returns true and burns a use. Used to unlock locked doors.
-     * @return - true if item is a key and still has a charge
+     * useItem - calls the corresponding items method and returns the value
      */
-    public boolean unlock(){
-        if(typeNum == 0 && !outOfCharges()){
-            uses--;
-            return true;
+    public int use(){
+        if(uses > 0){
+            if(typeNum == 0){
+                return unlock();
+            }
+            else if(typeNum == 1){
+                return drinkPot();
+            }
         }
-        else{
-            return false;
-        }
+        return 0;
+    }
+
+    /**
+     * Key - Unlocks a door
+     * @return - returns 1 to signify unlocking
+     */
+    public int unlock(){
+        uses--;
+        return 1;
     }
 
     /**
@@ -39,11 +49,8 @@ public class Item {
      * @return - returns the sum of two random numbers between 1-6 if the item has a charge
      */
     public int drinkPot(){
-        if(typeNum == 1 && !outOfCharges()){
-            uses--;
-            return (int)((1 + Math.random() * (5)) + (1 + Math.random() * (5)));
-        }
-        else return 0;
+        uses --;
+        return (int)((1 + Math.random() * (5)) + (1 + Math.random() * (5)));
     }
 
     /**
