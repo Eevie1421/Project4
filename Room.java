@@ -3,8 +3,7 @@ import java.util.ArrayList;
 public class Room {//maybe should be static class like Node?
     //Attributes
     private String roomName;
-    private static int id = 0;
-    private Room back, forward, left, right;//may need to be static as well?
+    private Integer back, forward, left, right;//may need to be static as well?
     private ArrayList<Player> players;//Player in array if placed in bucket corresponding to room
     //private static ArrayList<Player> players;//maybe?
     private ArrayList<Enemy> enemies;
@@ -18,8 +17,8 @@ public class Room {//maybe should be static class like Node?
     /*public Room(String name, Room prev, boolean lock) {
         this(name, prev, null, null, null, lock);
     }*/
-    public Room(String name, Room prev, Room front, Room sideL, Room sideR, boolean lock) {
-        id += 1;
+    public Room(String name, Integer prev, Integer front, Integer sideL, Integer sideR, boolean lock) {
+        roomName = name;
         back = prev;
         forward = front;
         left = sideL;
@@ -33,19 +32,16 @@ public class Room {//maybe should be static class like Node?
     public String getRoomName() {
         return roomName;
     }
-    public int getId() {
-        return id;
-    }
-    public Room getBack(){
+    public Integer getBack(){
         return back;
     }
-    public Room getForward(){
+    public Integer getForward(){
         return forward;
     }
-    public Room getLeft(){
+    public Integer getLeft(){
         return left;
     }
-    public Room getRight(){
+    public Integer getRight(){
         return right;
     }
     public ArrayList<Player> getPlayers() {
@@ -61,7 +57,7 @@ public class Room {//maybe should be static class like Node?
         return locked;
     }
     //setter type methods
-    public void setPaths(Room prev, Room front, Room sideL, Room sideR) {
+    public void setPaths(Integer prev, Integer front, Integer sideL, Integer sideR) {
         back = prev;
         forward = front;
         left = sideL;
@@ -92,8 +88,8 @@ public class Room {//maybe should be static class like Node?
         return false;
     }
     //Functional methods
-    public boolean moveRooms(Player player, Room destination) {
-        if(destination == null || !players.contains(player) || !adjacent(destination)) {
+    public boolean moveRooms(Player player, Room destination) {//maybe put in Map class instead
+        if(destination == null || !players.contains(player) /*|| !adjacent(destination)*/) {
             return false;
         }
         if(destination.isLocked()) {
@@ -106,7 +102,7 @@ public class Room {//maybe should be static class like Node?
         //move player, set room player is in to destination
         return true;
     }
-    public boolean adjacent(Room room) {
+    /*public boolean adjacent(Room room) {
         if(back.equals(room)) {
             return true;
         }
@@ -120,11 +116,12 @@ public class Room {//maybe should be static class like Node?
             return true;
         }
         return false;
-    }
+    }*/
     @Override
     public boolean equals(Object o) {
         if(super.equals(o) && getClass() == o.getClass()) {
-            if(roomName.equals(((Room) o).getRoomName()) && id == ((Room) o).getId()) {
+            if(roomName.equals(((Room) o).getRoomName()) && back.equals(((Room) o).getBack()) && forward.equals(((Room) o).getForward())
+                    && left.equals(((Room) o).getLeft()) && right.equals(((Room) o).getRight())) {
                 return true;
             }
         }
