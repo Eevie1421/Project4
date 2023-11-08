@@ -19,8 +19,8 @@ public class Map {
         rooms.put(10, new Room("Heal2", 7, null, null, null, false));
         rooms.put(11, new Room("Combat5", 8, null, 12, null, false));
         rooms.put(12, new Room("Exit", 11, null, null, null, false));
-        rooms.get(0).setPaths(null, 1, null, null);//maybe update pointers to point to integer keys
-        /*rooms.get(1).setPaths(0, null, 2, 3);
+        /*rooms.get(0).setPaths(null, 1, null, null);
+        rooms.get(1).setPaths(0, null, 2, 3);
         rooms.get(2).setPaths(1, null, null, 4);
         rooms.get(3).setPaths(1, 5, null, null);
         rooms.get(4).setPaths(2, null, null, null);
