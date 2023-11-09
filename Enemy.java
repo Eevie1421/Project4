@@ -50,5 +50,5 @@ public abstract class Enemy {
      * attackPlayer will choose which player to attack and return that players number
      */
     public abstract int attackPlayer(int players);
-    public abstract int attack1();
+    public abstract int attack1(int ac);
 }

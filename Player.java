@@ -15,6 +15,7 @@ public class Player {
     private int playerClass;
     private String name;
     private int playerAc;
+    private int attackMod;
 
     public Player(String name, int playerClass){
         status = 0;
@@ -23,7 +24,7 @@ public class Player {
         this.name = name;
         backpack = new Hashtable<>();
         this.playerClass = playerClass;
-        setAc();
+        setClassStats();
         pickItem(new Item(1));
     }
 
@@ -58,12 +59,14 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
-    public void setAc(){
+    public void setClassStats(){
         if(playerClass == 1){
             playerAc = 15;
+            attackMod = 3;
         }
         else{
             playerAc = 12;
+            attackMod = 1;
         }
     }
 
@@ -104,7 +107,7 @@ public class Player {
     }
 
     public int attack1(int ac){
-        int attackRoll = (int)(1 + Math.random() * 19);
+        int attackRoll = Dice.rollD20(1, attackMod);
         int damageRoll = 0;
         if(playerClass == 1 && attackRoll >= ac){
             damageRoll = sword();
@@ -115,10 +118,10 @@ public class Player {
         return damageRoll;
     }
     private int sword(){
-        return (int)(1 + Math.random() * 9);
+        return Dice.rollD10(1, attackMod);
     }
 
     private int mace(){
-        return (int)(1 + Math.random() * 5);
+        return Dice.rollD6(1, attackMod);
     }
 }

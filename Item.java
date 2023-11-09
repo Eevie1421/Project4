@@ -45,12 +45,12 @@ public class Item {
     }
 
     /**
-     * Health Pot - Heals player for 2d6 worth of health.
+     * Health Pot - Heals player for 2d6+2 worth of health.
      * @return - returns the sum of two random numbers between 1-6 if the item has a charge
      */
     public int drinkPot(){
         uses --;
-        return (int)((1 + Math.random() * (5)) + (1 + Math.random() * (5)));
+        return Dice.rollD6(2,2);
     }
 
     /**
