@@ -6,7 +6,7 @@ import java.util.Hashtable;
  * Player will also have different attack/ability options in future versions
  * Player will have and allow interaction with items.
  */
-public class Player {
+public class Player implements Creature{
     //status 0 is default, 1 is unconscious, 2 is dead. Room for more types later.
     private int status;
     private int maxHealth;
@@ -16,6 +16,7 @@ public class Player {
     private String name;
     private int playerAc;
     private int attackMod;
+    private int initiativeMod;
 
     public Player(String name, int playerClass){
         status = 0;
@@ -63,10 +64,12 @@ public class Player {
         if(playerClass == 1){
             playerAc = 15;
             attackMod = 3;
+            initiativeMod = 0;
         }
         else{
             playerAc = 12;
-            attackMod = 1;
+            attackMod = 2;
+            initiativeMod = 3;
         }
     }
 
@@ -106,7 +109,7 @@ public class Player {
         return true;
     }
 
-    public int attack1(int ac){
+    public int attack(int ac){
         int attackRoll = Dice.rollD20(1, attackMod);
         int damageRoll = 0;
         if(playerClass == 1 && attackRoll >= ac){
@@ -123,5 +126,10 @@ public class Player {
 
     private int mace(){
         return Dice.rollD6(1, attackMod);
+    }
+
+    @Override
+    public int rollInitiative() {
+        return Dice.rollD20(1, initiativeMod);
     }
 }
