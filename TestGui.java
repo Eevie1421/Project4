@@ -19,6 +19,7 @@ public class TestGui implements ActionListener {
         this.startPanel = new GameStartPanel();
         //defaultPanel.activatePanel(this);
         //test.add(defaultPanel);
+        startPanel.activatePanel(this);
         test.add(startPanel);
         test.setVisible(true);
     }
