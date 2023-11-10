@@ -4,6 +4,7 @@ public class Map {
     //Attributes
     private HashMap<Integer, Room> rooms;
     //Methods
+    /*
     public Map() {//build preset map
         rooms = new HashMap<>(13);
         rooms.put(0, new Room("Start",null, 1, null, null, false));
@@ -31,8 +32,11 @@ public class Map {
         rooms.get(9).setPaths(6, null, null, null);
         rooms.get(10).setPaths(7, null, null, null);
         rooms.get(11).setPaths(8, null, 12, null);
-        rooms.get(12).setPaths(11, null, null, null);*/
+        rooms.get(12).setPaths(11, null, null, null);
     }
+
+     */
+
     public Room getRoom(Integer i) {
         if(rooms.containsKey(i)) {
             return rooms.get(i);
