@@ -9,6 +9,7 @@ public class GameLogic {
         this.currentRoom = startingRoom;
     }
 
+/*
     public void play() {
         Scanner scanner = new Scanner(System.in);
 
@@ -46,4 +47,5 @@ public class GameLogic {
 
         System.out.println("Game Over! The adventure has ended.");
     }
+    */
 }

@@ -1,4 +1,5 @@
 public class Main {
+   /*
     public static void main(String[] args) {
         // Initialize player
         Player player = new Player("Player1", 1);
@@ -33,4 +34,5 @@ public class Main {
         // Start the game
         gameLogic.play();
     }
+    */
 }
