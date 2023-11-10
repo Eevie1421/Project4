@@ -32,6 +32,10 @@ public class Room {//maybe should be static class like Node?
     public String getRoomName() {
         return roomName;
     }
+    //Currently a placeholder
+    public String getDescription() {
+        return roomName;
+    }
     public Integer getBack(){
         return back;
     }
@@ -55,6 +59,13 @@ public class Room {//maybe should be static class like Node?
     }
     public boolean isLocked() {
         return locked;
+    }
+    //Currently a placeholder
+    public Enemy getEnemy() {
+        if(enemies.get(0) != null) {
+            return enemies.get(0);
+        }
+        return null;
     }
     //setter type methods
     public void setPaths(Integer prev, Integer front, Integer sideL, Integer sideR) {
