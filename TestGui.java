@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-public class TestGui implements ActionListener {
+public class TestGui implements ActionListener, ItemListener {
     private DefaultPanel defaultPanel;
     private JPanel currentFrame;
     private CombatPanel combatPanel;
@@ -17,14 +19,25 @@ public class TestGui implements ActionListener {
 
         this.defaultPanel = new DefaultPanel();
         this.startPanel = new GameStartPanel();
+        this.combatPanel = new CombatPanel();
         //defaultPanel.activatePanel(this);
         //test.add(defaultPanel);
-        startPanel.activatePanel(this);
-        test.add(startPanel);
+        //startPanel.activatePanel(this, this);
+        //test.add(startPanel);
+        test.add(combatPanel);
+        test.pack();
         test.setVisible(true);
     }
+
     public static void main(String args[]){
         new TestGui();
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if(e.getStateChange() == ItemEvent.SELECTED){
+            startPanel.updateClassPanel(e);
+        }
     }
 
     @Override

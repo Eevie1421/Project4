@@ -20,8 +20,6 @@ public class Player implements Creature{
 
     public Player(String name, int playerClass){
         status = 0;
-        maxHealth = 50;
-        health = 50;
         this.name = name;
         backpack = new Hashtable<>();
         this.playerClass = playerClass;
@@ -62,11 +60,15 @@ public class Player implements Creature{
     }
     public void setClassStats(){
         if(playerClass == 1){
+            health = 30;
+            maxHealth = 30;
             playerAc = 15;
             attackMod = 3;
             initiativeMod = 0;
         }
         else{
+            health = 40;
+            maxHealth = 40;
             playerAc = 12;
             attackMod = 2;
             initiativeMod = 3;
