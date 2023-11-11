@@ -1,22 +1,17 @@
 import java.util.ArrayList;
 
-public class Room {//maybe should be static class like Node?
+public class Room {
     //Attributes
     private String roomName;
-    private Integer back, forward, left, right;//may need to be static as well?
+    private Integer back, forward, left, right;
     private ArrayList<Player> players;//Player in array if placed in bucket corresponding to room
-    //private static ArrayList<Player> players;//maybe?
     private ArrayList<Enemy> enemies;
-    //private static ArrayList<Enemy> enemies;//maybe part 2?
-    private Item item;//may have none
+    private Item item;
     private boolean locked;
     //Methods
     public Room(String name, boolean lock) {
         this(name, null, null, null, null, lock);
     }
-    /*public Room(String name, Room prev, boolean lock) {
-        this(name, prev, null, null, null, lock);
-    }*/
     public Room(String name, Integer prev, Integer front, Integer sideL, Integer sideR, boolean lock) {
         roomName = name;
         back = prev;

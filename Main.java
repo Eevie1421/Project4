@@ -1,7 +1,7 @@
 public class Main {
-   /*
+
     public static void main(String[] args) {
-        // Initialize player
+        /*// Initialize player
         Player player = new Player("Player1", 1);
 
         // Initialize rooms
@@ -32,7 +32,6 @@ public class Main {
         GameLogic gameLogic = new GameLogic(player, startingRoom);
 
         // Start the game
-        gameLogic.play();
+        gameLogic.play();*/
     }
-    */
 }
