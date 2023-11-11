@@ -5,10 +5,35 @@ public class GameLogic {
     private Room currentRoom;
     private Map map;
 
-    public GameLogic(Player player, Room startingRoom) {
-        this.player = player;
+    public GameLogic(Player aPlayer, Room startingRoom) {
+        this.player = aPlayer;
         this.currentRoom = startingRoom;
         this.map = new Map();
+        player.setCurrentRoom(0);
+    }
+
+    private boolean moveRooms() {
+        //
+        return false;
+    }
+    private void enterRoom(Player p) {
+        //
+    }
+    public String moveBack(Player p) {
+        Room r = map.getRoom(p.getCurrentRoom());
+        return "";
+    }
+    public String moveForward(Player p) {
+        //
+        return "";
+    }
+    public String moveLeft(Player p) {
+        //
+        return "";
+    }
+    public String moveRight(Player p) {
+        //
+        return "";
     }
 
 /*

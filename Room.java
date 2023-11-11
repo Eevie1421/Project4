@@ -52,6 +52,12 @@ public class Room {
     public Item getItem() {
         return item;
     }
+    public boolean hasItem() {
+        if(item == null) {
+            return false;
+        }
+        return true;
+    }
     public boolean isLocked() {
         return locked;
     }
@@ -63,12 +69,12 @@ public class Room {
         return null;
     }
     //setter type methods
-    public void setPaths(Integer prev, Integer front, Integer sideL, Integer sideR) {
+    /*public void setPaths(Integer prev, Integer front, Integer sideL, Integer sideR) {
         back = prev;
         forward = front;
         left = sideL;
         right = sideR;
-    }
+    }*/
     public void addPlayer(Player x) {
         players.add(x);
     }
@@ -77,14 +83,18 @@ public class Room {
             players.remove(x);
         }
     }
-    public void addItem(Item i) {
+    public void setItem(Item i) {
         item = i;
     }
-    public void addEnemies(Enemy eType, int number) {
-        for(int i = 0; i < number; i++) {
-            enemies.add(eType);
-        }
+    public void addEnemy(Enemy e) {
+        enemies.add(e);
     }
+
+    /**
+     * placeholder method for unlocking a room
+     * @param player x
+     * @return true if success
+     */
     public boolean unlock(Player player) {
         if(true/*placeholder: player has key*/) {
             locked = false;
@@ -94,8 +104,8 @@ public class Room {
         return false;
     }
     //Functional methods
-    public boolean moveRooms(Player player, Room destination) {//maybe put in Map class instead
-        if(destination == null || !players.contains(player) /*|| !adjacent(destination)*/) {
+    /*public boolean moveRooms(Player player, Room destination) {//maybe put in Map class instead
+        if(destination == null || !players.contains(player)) {
             return false;
         }
         if(destination.isLocked()) {
@@ -107,7 +117,7 @@ public class Room {
         destination.addPlayer(player);
         //move player, set room player is in to destination
         return true;
-    }
+    }*/
     /*public boolean adjacent(Room room) {
         if(back.equals(room)) {
             return true;
