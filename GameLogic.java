@@ -3,10 +3,12 @@ import java.util.Scanner;
 public class GameLogic {
     private Player player;
     private Room currentRoom;
+    private Map map;
 
     public GameLogic(Player player, Room startingRoom) {
         this.player = player;
         this.currentRoom = startingRoom;
+        this.map = new Map();
     }
 
 /*

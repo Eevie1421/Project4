@@ -10,6 +10,7 @@ public class Player {
     private String name;
     private int playerAc;
     private int attackMod;
+    private Integer thisRoom;
 
     public Player(String name, int playerClass) {
         status = 0;
@@ -32,8 +33,16 @@ public class Player {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getAc() {
         return playerAc;
+    }
+
+    public Integer getCurrentRoom() {
+        return thisRoom;
     }
 
     public void pickItem(Item item) {
@@ -95,6 +104,10 @@ public class Player {
         }
     }
 
+    public void setCurrentRoom(Integer roomNum) {
+        thisRoom = roomNum;
+    }
+
     public void playTurn(Room currentRoom) {
         Scanner scanner = new Scanner(System.in);
 
@@ -132,5 +145,15 @@ public class Player {
             System.out.println("You decided not to proceed to the next room.");
             // End the game or take other actions based on your game design
         }
+
+    }
+    @Override
+    public boolean equals(Object o) {
+        if(super.equals(o) && getClass() == o.getClass()) {
+            if(name.equals(((Player) o).getName()) && playerAc == ((Player) o).getAc() && thisRoom.equals(((Player) o).getCurrentRoom()) && health == ((Player) o).checkHealth()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
