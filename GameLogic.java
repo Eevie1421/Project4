@@ -12,28 +12,71 @@ public class GameLogic {
         player.setCurrentRoom(0);
     }
 
-    private boolean moveRooms() {
-        //
+    private boolean moveRooms(Player p, Integer pointer) {
+        if(!map.getRoom(pointer).isLocked()) {
+            enterRoom(p, pointer);
+            return true;
+        }
+        else {
+            if(!map.getRoom(pointer).unlock(p)) {
+                enterRoom(p, pointer);
+                return true;
+            }
+        }
         return false;
     }
-    private void enterRoom(Player p) {
-        //
+    private void enterRoom(Player p, Integer pointer) {
+        map.getRoom(p.getCurrentRoom()).removePlayer(p);
+        p.setCurrentRoom(pointer);
+        map.getRoom(pointer).addPlayer(p);
     }
     public String moveBack(Player p) {
         Room r = map.getRoom(p.getCurrentRoom());
-        return "";
+        if(r.getBack() != null) {
+            if(moveRooms(p, r.getBack())) {
+                return "Proceeding on.";
+            }
+            else {
+                return "The door is locked...";
+            }
+        }
+        return "No way through...";
     }
     public String moveForward(Player p) {
-        //
-        return "";
+        Room r = map.getRoom(p.getCurrentRoom());
+        if(r.getForward() != null) {
+            if(moveRooms(p, r.getForward())) {
+                return "Proceeding on.";
+            }
+            else {
+                return "The door is locked...";
+            }
+        }
+        return "No way through...";
     }
     public String moveLeft(Player p) {
-        //
-        return "";
+        Room r = map.getRoom(p.getCurrentRoom());
+        if(r.getLeft() != null) {
+            if(moveRooms(p, r.getLeft())) {
+                return "Proceeding on.";
+            }
+            else {
+                return "The door is locked...";
+            }
+        }
+        return "No way through...";
     }
     public String moveRight(Player p) {
-        //
-        return "";
+        Room r = map.getRoom(p.getCurrentRoom());
+        if(r.getRight() != null) {
+            if(moveRooms(p, r.getRight())) {
+                return "Proceeding on.";
+            }
+            else {
+                return "The door is locked...";
+            }
+        }
+        return "No way through...";
     }
 
 /*

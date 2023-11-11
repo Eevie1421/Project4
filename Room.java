@@ -6,13 +6,14 @@ public class Room {
     private Integer back, forward, left, right;
     private ArrayList<Player> players;//Player in array if placed in bucket corresponding to room
     private ArrayList<Enemy> enemies;
+    private int type;
     private Item item;
     private boolean locked;
     //Methods
-    public Room(String name, boolean lock) {
-        this(name, null, null, null, null, lock);
+    public Room(String name, int rType) {
+        this(name, null, null, null, null, rType);
     }
-    public Room(String name, Integer prev, Integer front, Integer sideL, Integer sideR, boolean lock) {
+    public Room(String name, Integer prev, Integer front, Integer sideL, Integer sideR, int rType) {
         roomName = name;
         back = prev;
         forward = front;
@@ -20,17 +21,14 @@ public class Room {
         right = sideR;
         players = new ArrayList<>();
         enemies = new ArrayList<>();
-        item = null;
-        locked = lock;
+        type = rType;
+        setType();
     }
     //getter methods
     public String getRoomName() {
         return roomName;
     }
     //Currently a placeholder
-    public String getDescription() {
-        return roomName;
-    }
     public Integer getBack(){
         return back;
     }
@@ -49,6 +47,9 @@ public class Room {
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
+    public int getType() {
+        return type;
+    }
     public Item getItem() {
         return item;
     }
@@ -61,20 +62,33 @@ public class Room {
     public boolean isLocked() {
         return locked;
     }
-    //Currently a placeholder
-    public Enemy getEnemy() {
-        if(enemies.get(0) != null) {
-            return enemies.get(0);
-        }
-        return null;
-    }
     //setter type methods
-    /*public void setPaths(Integer prev, Integer front, Integer sideL, Integer sideR) {
-        back = prev;
-        forward = front;
-        left = sideL;
-        right = sideR;
-    }*/
+    public void setType() {
+        if(type == 1) {
+            item = null;
+            locked = false;
+        }
+        else if(type == 2) {
+            item = null;
+            locked = true;
+        }
+        else if(type == 3) {
+            item = new Item(0);
+            locked = false;
+        }
+        else if(type == 4) {
+            item = null;
+            locked = false;
+        }
+        else if(type == 5) {
+            item = null;
+            locked = false;
+        }
+        else {
+            item = null;
+            locked = false;
+        }
+    }
     public void addPlayer(Player x) {
         players.add(x);
     }
