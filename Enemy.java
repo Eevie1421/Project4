@@ -3,7 +3,7 @@
  * -attackPlayers
  * -attack1
  */
-public abstract class Enemy {
+public abstract class Enemy implements Creature{
     private int health;
     private int maxHealth;
     //status is true for alive false for dead
@@ -24,7 +24,7 @@ public abstract class Enemy {
         this(10, 10, 0);
     }
 
-    public int getEnemyAc() {
+    public int getAc() {
         return enemyAc;
     }
 
@@ -79,10 +79,4 @@ public abstract class Enemy {
      */
     public abstract int attackPlayer(int players);
 
-    /**
-     * attack - simulates an attack.
-     * @param ac - the armor class of the player being attacked.
-     * @return - the damage dealt by the attack. if the attack misses it returns 0.
-     */
-    public abstract int attack(int ac);
 }
