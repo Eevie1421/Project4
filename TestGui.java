@@ -24,6 +24,7 @@ public class TestGui implements ActionListener, ItemListener {
         //test.add(defaultPanel);
         //startPanel.activatePanel(this, this);
         //test.add(startPanel);
+        combatPanel.activatePanel(this);
         test.add(combatPanel);
         test.pack();
         test.setVisible(true);
@@ -42,6 +43,7 @@ public class TestGui implements ActionListener, ItemListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        startPanel.addPlayer(e);
+        int actionType;
+        actionType = combatPanel.actionSignal(e);
     }
 }
