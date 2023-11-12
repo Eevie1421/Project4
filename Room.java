@@ -67,6 +67,9 @@ public class Room {
         if(type == 1) {
             item = null;
             locked = false;
+            enemies.add(new Zombie());
+            enemies.add(new Zombie());
+            enemies.add(new Zombie());
         }
         else if(type == 2) {
             item = null;
@@ -75,14 +78,17 @@ public class Room {
         else if(type == 3) {
             item = new Item(0);
             locked = false;
+            //something for item pickups
         }
         else if(type == 4) {
             item = null;
             locked = false;
+            //something for healing
         }
         else if(type == 5) {
             item = null;
             locked = false;
+            enemies.add(new Boss());
         }
         else {
             item = null;
@@ -102,6 +108,16 @@ public class Room {
     }
     public void addEnemy(Enemy e) {
         enemies.add(e);
+    }
+    /**
+     * Checks the enemies list for defeated enemies, then removes them from the list
+     */
+    public void removeEnemy() {
+        for(Enemy e: enemies) {
+            if(!e.isAlive()) {
+                enemies.remove(e);
+            }
+        }
     }
 
     /**
