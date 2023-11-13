@@ -121,14 +121,13 @@ public class Room {
     }
 
     /**
-     * placeholder method for unlocking a room
-     * @param player x
+     * If a player has a key, set locked to false and return true, else return false.
+     * @param player Player trying to unlock
      * @return true if success
      */
     public boolean unlock(Player player) {
-        if(true/*placeholder: player has key*/) {
+        if(player.useItem("key")) {
             locked = false;
-            //remove key
             return true;//If player has key, set locked to false and remove key
         }
         return false;

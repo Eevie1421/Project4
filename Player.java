@@ -97,7 +97,10 @@ public class Player implements Creature{
         backpack.put(item.getType(), item);
     }
 
-    public boolean useItem(String key){
+    public boolean useItem(String key) {
+        if(!backpack.contains(key)) {
+            return false;
+        }
         Item temp = backpack.get(key);
         if(temp.outOfCharges()){
             return false;
