@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
-public class SanctuaryPanel extends JPanel {
+public class SanctuaryPanel extends JPanel  implements GamePanel{
     private JButton p1Heal;
     private JButton p2Heal;
     private JButton p3Heal;
@@ -65,7 +66,7 @@ public class SanctuaryPanel extends JPanel {
         add(textArea, c);
     }
 
-    public void activatePanel(ActionListener a) {
+    public void activatePanel(ActionListener a, ItemListener e) {
         p1Heal.addActionListener(a);
         p2Heal.addActionListener(a);
         p3Heal.addActionListener(a);

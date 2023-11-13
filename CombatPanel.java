@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
-public class CombatPanel extends JPanel {
+public class CombatPanel extends JPanel  implements GamePanel{
     private playerPanel player1;
     private playerPanel player2;
     private playerPanel player3;
@@ -59,7 +60,8 @@ public class CombatPanel extends JPanel {
 
     }
 
-    public void activatePanel(ActionListener a) {
+    @Override
+    public void activatePanel(ActionListener a, ItemListener e) {
         player1.attack.addActionListener(a);
         player2.attack.addActionListener(a);
         player3.attack.addActionListener(a);

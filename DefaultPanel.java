@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
 import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.NONE;
@@ -64,12 +65,18 @@ public class DefaultPanel extends JPanel implements GamePanel {
         txt.setText(newText);
     }
     @Override
-    public void activatePanel(ActionListener a) {
+    public void activatePanel(ActionListener a, ItemListener e) {
         moveRooms.addActionListener(a);
         for (playerPane player : players) {
             player.setButtons(a);
         }
     }
+
+    @Override
+    public int actionSignal(ActionEvent e) {
+        return 0;
+    }
+
     private class playerPane{
         private JButton items;
         private JButton interact;

@@ -1,3 +1,6 @@
+/* GameStartPanel
+ * -Handles character selection screen
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,8 +11,7 @@ import java.util.Hashtable;
 
 import static java.awt.GridBagConstraints.*;
 
-public class GameStartPanel extends JPanel{
-    private JTextArea txt;
+public class GameStartPanel extends JPanel  implements GamePanel{
     private CharSelect player1;
     private CharSelect player2;
     private CharSelect player3;
@@ -34,6 +36,7 @@ public class GameStartPanel extends JPanel{
         player3 = new CharSelect(3);
         player4 = new CharSelect(4);
         startButton = new JButton("Start");
+        startButton.setActionCommand("Start");
         startButton.setPreferredSize(new Dimension(400,200));
         panel5 = new JPanel();
         panel5.setPreferredSize(new Dimension(1600, 200));
@@ -69,8 +72,109 @@ public class GameStartPanel extends JPanel{
         add(panel5, c);
     }
 
-    public void addPlayer(ActionEvent e){
+    public Player[] getPlayers(){
+        Player[] players = new Player[4];
+        if(player1.lockedIn){
+            if(player1.playerClass.equals("Fighter")){
+                players[0] = new Player(player1.getPlayerName(), 1);
+            }
+            else {
+                players[0] = new Player(player1.getPlayerName(), 2);
+            }
+        }
+        else if(player2.lockedIn){
+            if(player2.playerClass.equals("Fighter")){
+                players[1] = new Player(player2.getPlayerName(), 1);
+            }
+            else{
+                players[1] = new Player(player2.getPlayerName(), 2);
+            }
+        }
+        else if(player3.lockedIn){
+            if(player3.playerClass.equals("Fighter")){
+                players[2] = new Player(player3.getPlayerName(), 1);
+            }
+            else{
+                players[2] = new Player(player3.getPlayerName(), 2);
+            }
+        }
+        else if(player4.lockedIn){
+            if(player4.playerClass.equals("Fighter")){
+                players[3] = new Player(player4.getPlayerName(), 1);
+            }
+            else{
+                players[3] = new Player(player4.getPlayerName(), 2);
+            }
+        }
+        return players;
+    }
+    public boolean playersLocked(){
+        boolean i = true;
+        if(player1.playing && !player1.lockedIn){
+            i = false;
+        }
+        else if(player2.playing && !player2.lockedIn){
+            i = false;
+        }
+        else if(player3.playing && !player3.lockedIn){
+            i = false;
+        }
+        else if(player4.playing && !player4.lockedIn){
+            i = false;
+        }
+        return i;
+    }
+
+    @Override
+    public int actionSignal(ActionEvent e) {
+        int sig = -1;
+        if(e.getActionCommand().equals("Add")){
+            addPlayer(e);
+            sig = 0;
+        }
+        else if(e.getActionCommand().equals("Lock In")){
+            if(e.getSource().equals(player1.lockInButton)){
+                lockIn(1);
+            }
+            else if(e.getSource().equals(player2.lockInButton)){
+                lockIn(2);
+            }
+            else if (e.getSource().equals(player3.lockInButton)){
+                lockIn(3);
+            }
+            else{
+                lockIn(4);
+            }
+        }
+        else if(e.getActionCommand().equals("Start") && playersLocked()){
+            sig = 1;
+        }
+        return sig;
+    }
+
+    private void lockIn(int player){
+        if(player == 1){
+            player1.playerClass = (String) player1.dropDown.getSelectedItem();
+            player1.lockedIn = true;
+        }
+        else if(player == 2){
+            player2.playerClass = (String) player2.dropDown.getSelectedItem();
+            player2.lockedIn = true;
+        }
+        else if(player == 3){
+            player3.playerClass = (String) player3.dropDown.getSelectedItem();
+            player3.lockedIn = true;
+        }
+        else {
+            player4.playerClass = (String) player4.dropDown.getSelectedItem();
+            player4.lockedIn = true;
+        }
+    }
+
+    private void addPlayer(ActionEvent e){
         if(e.getSource().equals(player1.start)){
+            player1.playing = true;
+
             panel1.remove(player1.start);
             panel1.setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
@@ -94,6 +198,8 @@ public class GameStartPanel extends JPanel{
 
         }
         else if(e.getSource().equals(player2.start)){
+            player2.playing = true;
+
             panel2.remove(player2.getStart());
             panel2.setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
@@ -116,6 +222,8 @@ public class GameStartPanel extends JPanel{
             panel2.revalidate();
         }
         else if(e.getSource().equals(player3.start)){
+            player3.playing = true;
+
             panel3.remove(player3.getStart());
             panel3.setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
@@ -138,6 +246,8 @@ public class GameStartPanel extends JPanel{
             panel3.revalidate();
         }
         else if(e.getSource().equals(player4.start)){
+            player4.playing = true;
+
             panel4.remove(player4.getStart());
             panel4.setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
@@ -197,12 +307,13 @@ public class GameStartPanel extends JPanel{
         player2.lockInButton.addActionListener(a);
         player3.lockInButton.addActionListener(a);
         player4.lockInButton.addActionListener(a);
+        startButton.addActionListener(a);
     }
 
     private class CharSelect extends JComponent{
         private int playerNum;
         private boolean lockedIn;
-        private String playerName;
+        private boolean playing;
         private String playerClass;
         private JButton start;
         private JTextField name;
@@ -211,8 +322,10 @@ public class GameStartPanel extends JPanel{
         private JButton lockInButton;
 
         private CharSelect(int playerNum){
+            playing = false;
             this.playerNum = playerNum;
             start = new JButton("Add Player");
+            start.setActionCommand("Add");
             start.setPreferredSize(new Dimension(395,1000));
             name = new JTextField("Enter Name");
             name.setPreferredSize(new Dimension(395, 100));
@@ -226,27 +339,23 @@ public class GameStartPanel extends JPanel{
             classStats = new JTextArea(classText.get("Fighter"));
             classStats.setPreferredSize(new Dimension(400, 800));
             lockInButton = new JButton("Lock In");
+            lockInButton.setActionCommand("Lock In");
             lockInButton.setPreferredSize(new Dimension(400, 200));
         }
 
-        public int getPlayerNum() {
+        private int getPlayerNum() {
             return playerNum;
         }
+        private String getPlayerName(){
+            return name.getText();
+        }
 
-        public JButton getStart() {
+        private JButton getStart() {
             return start;
         }
 
-        public boolean isLockedIn(){
+        private boolean isLockedIn() {
             return lockedIn;
-        }
-
-        public void lockIn(){
-            lockedIn = true;
-        }
-
-        public JTextField getNameBox() {
-            return name;
         }
     }
 }
