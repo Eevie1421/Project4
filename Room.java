@@ -10,9 +10,16 @@ public class Room {
     private Item item;
     private boolean locked;
     //Methods
-    public Room(String name, int rType) {
-        this(name, null, null, null, null, rType);
-    }
+    /**
+     * Constructor, sets room name, pointers to other rooms, initializes player and Enemy lists, and sets room type then
+     * calls setType() to finish construction.
+     * @param name
+     * @param prev
+     * @param front
+     * @param sideL
+     * @param sideR
+     * @param rType
+     */
     public Room(String name, Integer prev, Integer front, Integer sideL, Integer sideR, int rType) {
         roomName = name;
         back = prev;
@@ -28,7 +35,6 @@ public class Room {
     public String getRoomName() {
         return roomName;
     }
-    //Currently a placeholder
     public Integer getBack(){
         return back;
     }
@@ -63,7 +69,7 @@ public class Room {
         return locked;
     }
     //setter type methods
-    public void setType() {
+    private void setType() {
         if(type == 1) {
             item = null;
             locked = false;
@@ -109,8 +115,9 @@ public class Room {
     public void addEnemy(Enemy e) {
         enemies.add(e);
     }
+    //Functional methods
     /**
-     * Checks the enemies list for defeated enemies, then removes them from the list
+     * Checks the enemies list for defeated enemies, then removes them from the list.
      */
     public void removeEnemy() {
         for(Enemy e: enemies) {
@@ -119,11 +126,10 @@ public class Room {
             }
         }
     }
-
     /**
      * If a player has a key, set locked to false and return true, else return false.
      * @param player Player trying to unlock
-     * @return true if success
+     * @return true if successful
      */
     public boolean unlock(Player player) {
         if(player.useItem("key")) {
@@ -132,36 +138,6 @@ public class Room {
         }
         return false;
     }
-    //Functional methods
-    /*public boolean moveRooms(Player player, Room destination) {//maybe put in Map class instead
-        if(destination == null || !players.contains(player)) {
-            return false;
-        }
-        if(destination.isLocked()) {
-            if(!unlock(player)) {
-                return false;
-            }
-        }
-        players.remove(player);
-        destination.addPlayer(player);
-        //move player, set room player is in to destination
-        return true;
-    }*/
-    /*public boolean adjacent(Room room) {
-        if(back.equals(room)) {
-            return true;
-        }
-        if(forward.equals(room)) {
-            return true;
-        }
-        if(left.equals(room)) {
-            return true;
-        }
-        if(right.equals(room)) {
-            return true;
-        }
-        return false;
-    }*/
     @Override
     public boolean equals(Object o) {
         if(super.equals(o) && getClass() == o.getClass()) {
