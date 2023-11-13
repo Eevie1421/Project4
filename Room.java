@@ -32,43 +32,91 @@ public class Room {
         setType();
     }
     //getter methods
+    /**
+     * Basic getter.
+     * @return attribute String roomName
+     */
     public String getRoomName() {
         return roomName;
     }
+    /**
+     * Basic getter.
+     * @return attribute Integer back
+     */
     public Integer getBack(){
         return back;
     }
+    /**
+     * Basic getter.
+     * @return attribute Integer forward
+     */
     public Integer getForward(){
         return forward;
     }
+    /**
+     * Basic getter.
+     * @return attribute Integer left
+     */
     public Integer getLeft(){
         return left;
     }
+    /**
+     * Basic getter.
+     * @return attribute Integer right
+     */
     public Integer getRight(){
         return right;
     }
+    /**
+     * Basic getter.
+     * @return attribute ArrayList<String> players
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
+    /**
+     * Basic getter.
+     * @return attribute ArrayList<String> enemies
+     */
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
+    /**
+     * Basic getter.
+     * @return attribute int type
+     */
     public int getType() {
         return type;
     }
+    /**
+     * Basic getter.
+     * @return attribute Item item
+     */
     public Item getItem() {
         return item;
     }
+    /**
+     * Checks if item is null or not.
+     * @return false if item is null
+     */
     public boolean hasItem() {
         if(item == null) {
             return false;
         }
         return true;
     }
+    /**
+     * Basic getter.
+     * @return attribute boolean locked
+     */
     public boolean isLocked() {
         return locked;
     }
     //setter type methods
+    /**
+     * Continuation of constructor. Sets item, locked, and adds enemies depending on the value of type.
+     * Room types: 0=start, 1=combat, 2=objective, 3=item, 4=heal, 5=boss, 6=end
+     */
     private void setType() {
         if(type == 1) {//1=combat
             item = null;
@@ -101,17 +149,33 @@ public class Room {
             locked = false;
         }
     }
+    /**
+     * Adds a Player to players list.
+     * @param p Player added to players
+     */
     public void addPlayer(Player p) {
         players.add(p);
     }
+    /**
+     * Removes Player p if it exists in players list.
+     * @param p Player to be removed
+     */
     public void removePlayer(Player p) {
         if(players.contains(p)) {
             players.remove(p);
         }
     }
+    /**
+     * Sets item to Item i.
+     * @param i Item set to item
+     */
     public void setItem(Item i) {
         item = i;
     }
+    /**
+     * Adds an Enemy to enemies list.
+     * @param e Enemy added to enemies
+     */
     public void addEnemy(Enemy e) {
         enemies.add(e);
     }
@@ -138,6 +202,11 @@ public class Room {
         }
         return false;
     }
+    /**
+     * Compares this Object to another.
+     * @param o Object to be compared
+     * @return true if Object o matches this Object
+     */
     @Override
     public boolean equals(Object o) {
         if(super.equals(o) && getClass() == o.getClass()) {
