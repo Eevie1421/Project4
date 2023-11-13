@@ -13,12 +13,12 @@ public class Room {
     /**
      * Constructor, sets room name, pointers to other rooms, initializes player and Enemy lists, and sets room type then
      * calls setType() to finish construction.
-     * @param name
-     * @param prev
-     * @param front
-     * @param sideL
-     * @param sideR
-     * @param rType
+     * @param name String set to roomName
+     * @param prev Integer set to back pointer
+     * @param front Integer set to forward pointer
+     * @param sideL Integer set to left pointer
+     * @param sideR Integer set to right pointer
+     * @param rType int set to type
      */
     public Room(String name, Integer prev, Integer front, Integer sideL, Integer sideR, int rType) {
         roomName = name;
@@ -101,12 +101,12 @@ public class Room {
             locked = false;
         }
     }
-    public void addPlayer(Player x) {
-        players.add(x);
+    public void addPlayer(Player p) {
+        players.add(p);
     }
-    public void removePlayer(Player x) {
-        if(players.contains(x)) {
-            players.remove(x);
+    public void removePlayer(Player p) {
+        if(players.contains(p)) {
+            players.remove(p);
         }
     }
     public void setItem(Item i) {
@@ -128,11 +128,11 @@ public class Room {
     }
     /**
      * If a player has a key, set locked to false and return true, else return false.
-     * @param player Player trying to unlock
+     * @param p Player trying to unlock
      * @return true if successful
      */
-    public boolean unlock(Player player) {
-        if(player.useItem("key")) {
+    public boolean unlock(Player p) {
+        if(p.useItem("key")) {
             locked = false;
             return true;//If player has key, set locked to false and remove key
         }
