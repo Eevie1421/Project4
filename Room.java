@@ -70,33 +70,33 @@ public class Room {
     }
     //setter type methods
     private void setType() {
-        if(type == 1) {
+        if(type == 1) {//1=combat
             item = null;
             locked = false;
             enemies.add(new Zombie());
             enemies.add(new Zombie());
             enemies.add(new Zombie());
         }
-        else if(type == 2) {
+        else if(type == 2) {//2=objective
             item = null;
             locked = true;
         }
-        else if(type == 3) {
+        else if(type == 3) {//3=item
             item = new Item(0);
             locked = false;
             //something for item pickups
         }
-        else if(type == 4) {
+        else if(type == 4) {//4=sanctuary
             item = null;
             locked = false;
             //something for healing
         }
-        else if(type == 5) {
+        else if(type == 5) {//5=boss
             item = null;
             locked = false;
             enemies.add(new Boss());
         }
-        else {
+        else {//0=start, //6=end
             item = null;
             locked = false;
         }

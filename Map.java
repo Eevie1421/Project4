@@ -8,7 +8,7 @@ public class Map {
      * Constructor. Creates a default map of Room objects complete with pointers and types.
      */
     public Map() {//build preset map
-        rooms = new HashMap<>(13);//Room types: 0=start/end, 1=combat, 2=objective, 3=item, 4=heal, 5=boss
+        rooms = new HashMap<>(13);//Room types: 0=start, 1=combat, 2=objective, 3=item, 4=heal, 5=boss, 6=end
         rooms.put(0, new Room("Start",null, 1, null, null, 0));
         rooms.put(1, new Room("Combat1", 0, null, 2, 3, 1));
         rooms.put(2, new Room("Combat2", 1, null, null, 4, 1));
@@ -21,7 +21,7 @@ public class Map {
         rooms.put(9, new Room("Item2", 6, null, null, null, 3));
         rooms.put(10, new Room("Heal2", 7, null, null, null, 4));
         rooms.put(11, new Room("Combat5", 8, null, 12, null, 5));
-        rooms.put(12, new Room("Exit", 11, null, null, null, 0));
+        rooms.put(12, new Room("Exit", 11, null, null, null, 6));
     }
     /**
      * Returns a Room from the map corresponding to the Integer key.
