@@ -6,7 +6,7 @@ public class EndPanel extends JPanel {
 
     public EndPanel() {
         setPreferredSize(new Dimension(1600, 1200));
-        message = new JTextArea("You won! Now go away.");
+        message = new JTextArea("Success!");
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 4;
