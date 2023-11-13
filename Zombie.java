@@ -31,5 +31,9 @@ public class Zombie extends Enemy{
         }
         return damageRoll;
     }
+
+    @Override
+    public int rollInitiative() {
+        return Dice.rollD20(1, -1);
+    }
 }
-//HI ITS SALIM

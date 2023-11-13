@@ -1,49 +1,52 @@
-import java.util.Scanner;
-
 public class GameLogic {
     private Player player;
     private Room currentRoom;
+    private Map map;
 
-    public GameLogic(Player player, Room startingRoom) {
-        this.player = player;
+    public GameLogic(Player aPlayer, Room startingRoom, Map gameMap) {
+        this.player = aPlayer;
         this.currentRoom = startingRoom;
+        this.map = new Map();
+        player.setCurrentRoom(0);
     }
 
-    public void play() {
-        Scanner scanner = new Scanner(System.in);
-
-        while (player.isAlive() && currentRoom != null) {
-            System.out.println("Current Room: " + currentRoom.getDescription());
-
-            if (currentRoom.getEnemy() != null) {
-                // Handle combat
-                System.out.println("Do you want to attack? (yes/no)");
-                String userInput = scanner.nextLine();
-
-                if ("yes".equalsIgnoreCase(userInput)) {
-                    int damage = player.attack1(currentRoom.getEnemy().getEnemyAc());
-                    currentRoom.getEnemy().updateHealth(damage);
-                    System.out.println("You hit the enemy for " + damage + " damage!");
-                } else {
-                    System.out.println("You decided not to attack.");
-                }
-
-                // ... Handle enemy's attack and check for player defeat ...
-            }
-
-            // Handle other room interactions and move to the next room based on user input
-            // For simplicity, let's assume there's always a next room
-            System.out.println("Do you want to proceed to the next room? (yes/no)");
-            String userInput = scanner.nextLine();
-
-            if ("yes".equalsIgnoreCase(userInput)) {
-                currentRoom = currentRoom.getNextRoom();
-            } else {
-                System.out.println("You decided not to proceed to the next room. The adventure has ended.");
-                break;
-            }
+    public String moveBack() {
+        Room currentRoom = map.getRoom(player.getCurrentRoom());
+        if (currentRoom.getBack() != null) {
+            player.move(0);
+            return "Proceeding backward.";
+        } else {
+            return "No way to move backward.";
         }
+    }
 
-        System.out.println("Game Over! The adventure has ended.");
+    public String moveForward() {
+        Room currentRoom = map.getRoom(player.getCurrentRoom());
+        if (currentRoom.getForward() != null) {
+            player.move(1);
+            return "Proceeding forward.";
+        } else {
+            return "No way to move forward.";
+        }
+    }
+
+    public String moveLeft() {
+        Room currentRoom = map.getRoom(player.getCurrentRoom());
+        if (currentRoom.getLeft() != null) {
+            player.move(2);
+            return "Moving left.";
+        } else {
+            return "No way to move left.";
+        }
+    }
+
+    public String moveRight() {
+        Room currentRoom = map.getRoom(player.getCurrentRoom());
+        if (currentRoom.getRight() != null) {
+            player.move(3);
+            return "Moving right.";
+        } else {
+            return "No way to move right.";
+        }
     }
 }
