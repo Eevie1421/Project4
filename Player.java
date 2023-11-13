@@ -1,11 +1,6 @@
-
 import java.util.Hashtable;
+import java.util.Scanner;
 
-/* Player v 0.1
- * Player's job is to keep track of health and status.
- * Player will also have different attack/ability options in future versions
- * Player will have and allow interaction with items.
- */
 public class Player implements Creature{
     //status 0 is default, 1 is unconscious, 2 is dead. Room for more types later.
     private int status;
@@ -17,16 +12,18 @@ public class Player implements Creature{
     private int playerAc;
     private int attackMod;
     private int initiativeMod;
+    private Integer thisRoom;
 
     public Player(String name, int playerClass){
         status = 0;
+        maxHealth = 50;
+        health = 50;
         this.name = name;
         backpack = new Hashtable<>();
         this.playerClass = playerClass;
         setClassStats();
         pickItem(new Item(1));
     }
-
     public Player(){
         this("John", 1);
     }
@@ -47,6 +44,10 @@ public class Player implements Creature{
         return status;
     }
 
+    public Integer getCurrentRoom() {
+        return thisRoom;
+    }
+
     public void setHealth(int health) {
         this.health = health;
     }
@@ -60,19 +61,19 @@ public class Player implements Creature{
     }
     public void setClassStats(){
         if(playerClass == 1){
-            health = 30;
-            maxHealth = 30;
             playerAc = 15;
             attackMod = 3;
             initiativeMod = 0;
         }
         else{
-            health = 40;
-            maxHealth = 40;
             playerAc = 12;
             attackMod = 2;
             initiativeMod = 3;
         }
+    }
+
+    public void setCurrentRoom(Integer roomNum) {
+        thisRoom = roomNum;
     }
 
     public void updateStatus(int status){
@@ -133,5 +134,14 @@ public class Player implements Creature{
     @Override
     public int rollInitiative() {
         return Dice.rollD20(1, initiativeMod);
+    }
+    @Override
+    public boolean equals(Object o) {
+        if(super.equals(o) && getClass() == o.getClass()) {
+            if(name.equals(((Player) o).getName()) && playerAc == ((Player) o).getAc() && thisRoom.equals(((Player) o).getCurrentRoom()) && health == ((Player) o).checkHealth()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

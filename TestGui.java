@@ -20,12 +20,15 @@ public class TestGui implements ActionListener, ItemListener {
         this.defaultPanel = new DefaultPanel();
         this.startPanel = new GameStartPanel();
         this.combatPanel = new CombatPanel();
+        this.sanctuary = new SanctuaryPanel();
         //defaultPanel.activatePanel(this);
         //test.add(defaultPanel);
         //startPanel.activatePanel(this, this);
         //test.add(startPanel);
-        combatPanel.activatePanel(this);
-        test.add(combatPanel);
+        //combatPanel.activatePanel(this);
+        //test.add(combatPanel);
+        sanctuary.activatePanel(this);
+        test.add(sanctuary);
         test.pack();
         test.setVisible(true);
     }
