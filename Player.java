@@ -13,15 +13,14 @@ public class Player implements Creature{
     private int playerAc;
     private int attackMod;
     private int initiativeMod;
-    private Integer thisRoom;
+    private boolean abilityUsed;
 
     public Player(String name, int playerClass){
         status = 0;
-        maxHealth = 50;
-        health = 50;
         this.name = name;
         backpack = new Hashtable<>();
         this.playerClass = playerClass;
+        abilityUsed = false;
         setClassStats();
         pickItem(new Item(1));
     }
@@ -47,10 +46,6 @@ public class Player implements Creature{
         return status;
     }
 
-    public Integer getCurrentRoom() {
-        return thisRoom;
-    }
-
     public void setHealth(int health) {
         this.health = health;
     }
@@ -64,19 +59,19 @@ public class Player implements Creature{
     }
     public void setClassStats(){
         if(playerClass == 1){
+            maxHealth = 30;
+            health = 30;
             playerAc = 15;
             attackMod = 3;
             initiativeMod = 0;
         }
         else{
+            maxHealth = 25;
+            health = 25;
             playerAc = 12;
             attackMod = 2;
             initiativeMod = 3;
         }
-    }
-
-    public void setCurrentRoom(Integer roomNum) {
-        thisRoom = roomNum;
     }
 
     public void updateStatus(int status){
@@ -134,6 +129,27 @@ public class Player implements Creature{
         return Dice.rollD6(1, attackMod);
     }
 
+    public void setAbilityUsed(boolean abilityUsed) {
+        this.abilityUsed = abilityUsed;
+    }
+
+    public boolean isAbilityUsed() {
+        return abilityUsed;
+    }
+
+    public int useAbility(){
+        int hp = 0;
+        if(playerClass == 1 && !abilityUsed){
+            abilityUsed = true;
+            hp = Dice.rollD8(1, attackMod);
+        }
+        else if(playerClass == 2 && !abilityUsed) {
+            abilityUsed = true;
+            hp = -1 * Dice.rollD8(2, 0);
+        }
+        return hp;
+    }
+
     @Override
     public int rollInitiative() {
         return Dice.rollD20(1, initiativeMod);
@@ -147,7 +163,7 @@ public class Player implements Creature{
     @Override
     public boolean equals(Object o) {
         if(super.equals(o) && getClass() == o.getClass()) {
-            if(name.equals(((Player) o).getName()) && playerAc == ((Player) o).getAc() && thisRoom.equals(((Player) o).getCurrentRoom()) && health == ((Player) o).checkHealth()) {
+            if(name.equals(((Player) o).getName()) && playerAc == ((Player) o).getAc() && health == ((Player) o).checkHealth()) {
                 return true;
             }
         }

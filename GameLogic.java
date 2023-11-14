@@ -195,6 +195,9 @@ public class GameLogic implements ActionListener, ItemListener {
             Creature temp = combat.poll();
         }
         enemies = new ArrayList<>();
+        for(Player p : players){
+            p.setAbilityUsed(false);
+        }
         state = 1;
     }
 
@@ -324,13 +327,31 @@ public class GameLogic implements ActionListener, ItemListener {
                     }
                 }
                 else if(signal == 2){
-
+                    int abl = currentPlayer.useAbility();
+                    if(abl > 0){
+                        for(Enemy en : enemies){
+                            en.updateHealth(abl);
+                        }
+                        temp.setText(currentPlayer.getName() + " deals " + abl + " damage to all enemies");
+                    }
+                    else if(abl < 0){
+                        for(Player p : players){
+                            p.updateHealth(abl);
+                        }
+                        temp.setText(currentPlayer.getName() + " heals the party for " + abl + " health");
+                    }
                 }
                 else if(signal == 3){
 
                 }
                 temp.updateEnemies(enemies);
                 combat.offerLast(currentPlayer);
+            }
+        }
+        else if(currentPanel.getClass().isInstance(new SanctuaryPanel())){
+            if(signal > 0){
+                signal--;
+                players[signal].updateHealth(-1 * Dice.rollD12(1, 0));
             }
         }
     }

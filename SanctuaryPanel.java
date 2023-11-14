@@ -23,6 +23,7 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
 
         moveRooms = new JButton("Move Rooms");
         moveRooms.setPreferredSize(new Dimension(400, 800));
+        moveRooms.setActionCommand("Move");
         p1Heal = new JButton("Player 1 Heal");
         p1Heal.setPreferredSize(new Dimension(1200, 200));
         p2Heal = new JButton("Player 2 Heal");
@@ -68,10 +69,18 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
 
     @Override
     public void activatePanel(ActionListener a, ItemListener e, Player[] players) {
-        p1Heal.addActionListener(a);
-        p2Heal.addActionListener(a);
-        p3Heal.addActionListener(a);
-        p4Heal.addActionListener(a);
+        if(players[0].isALive()){
+            p1Heal.addActionListener(a);
+        }
+        else if(players[1].isALive()){
+            p2Heal.addActionListener(a);
+        }
+        else if(players[2].isALive()){
+            p3Heal.addActionListener(a);
+        }
+        else if(players[3].isALive()){
+            p4Heal.addActionListener(a);
+        }
         moveRooms.addActionListener(a);
     }
 
@@ -102,6 +111,6 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
 
     @Override
     public void setText(String s){
-
+        textArea.setText(s);
     }
 }
