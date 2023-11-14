@@ -55,10 +55,7 @@ public class Room {
         return item;
     }
     public boolean hasItem() {
-        if(item == null) {
-            return false;
-        }
-        return true;
+        return item != null;
     }
     public boolean isLocked() {
         return locked;
@@ -74,7 +71,7 @@ public class Room {
         }
         else if(type == 2) {
             item = null;
-            locked = true;
+            locked = false;
         }
         else if(type == 3) {
             item = new Item(0);
@@ -88,7 +85,7 @@ public class Room {
         }
         else if(type == 5) {
             item = null;
-            locked = false;
+            locked = true;
             enemies.add(new Boss());
         }
         else {

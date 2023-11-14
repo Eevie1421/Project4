@@ -74,7 +74,7 @@ public class GameLogic implements ActionListener, ItemListener {
         movePanel = new MovePanel(currentRoom);
         combat = new LinkedList<>();
         enemies = new ArrayList<>();
-        initiative = new int[5];
+        initiative = new int[]{-1, -1, -1, -1, -1};
         startGame();
 
     }
@@ -151,7 +151,7 @@ public class GameLogic implements ActionListener, ItemListener {
                     combat.offer(c);
                 }
             }
-            else if(players[order[i]].isALive()){
+            else if(initiative[order[i]] > 0){
                 combat.offer(players[order[i]]);
             }
         }
@@ -173,18 +173,38 @@ public class GameLogic implements ActionListener, ItemListener {
             }
             else{
                 if(temp.isALive()){
-                    int playerAttacked = temp.attackPlayer(players.length);
+                    int alivePlayers = 0;
+                    for (Player p: players) {
+                        if(p.isALive()){
+                            alivePlayers++;
+                        }
+                    }
+                    int playerAttacked = temp.attackPlayer(alivePlayers);
+                    if(playerAttacked < 0){
+                        int damage = temp.attack(0);
+                        for(Player p : players){
+                            p.updateHealth(damage);
+                            if(!p.isALive()){
+                                currentPanel.setText(p.getName() + " is dead");
+                                combat.remove(p);
+                            }
+                        }
+                    }
                     Player target = players[playerAttacked];
                     int damage = temp.attack(target.getAc());
                     target.updateHealth(damage);
                     currentPanel.setText(target.getName() + " took " + damage + " damage." + "\n" + "HP: " + target.checkHealth());
                     combat.offerLast(temp);
+                    if(!target.isALive()){
+                        currentPanel.setText(target.getName() + " is dead");
+                        combat.remove(target);
+                    }
                 }
                 else{
                     currentPanel.setText(temp.getName() + " is dead");
                 }
                 if(!checkPlayers()){
-                    endGame();
+                    endGame(false);
                 }
             }
         }
@@ -198,10 +218,11 @@ public class GameLogic implements ActionListener, ItemListener {
         for(Player p : players){
             p.setAbilityUsed(false);
         }
+        initiative = new int[]{-1, -1, -1, -1, -1};
         state = 1;
     }
 
-    private void endGame(){
+    private void endGame(boolean gameWon){
 
     }
     private boolean checkPlayers(){
@@ -218,12 +239,24 @@ public class GameLogic implements ActionListener, ItemListener {
 
         if(currentPanel.getClass().isInstance(new DefaultPanel())){
             state = 1;
+            if(currentRoom.getType() == 3){
+                currentPanel.setText("You find a chest in the middle of a small room. it looks unlocked...");
+            }
+            else if(currentRoom.getType() == 2){
+                currentPanel.setText("(Placeholder for objective type rooms in future)");
+            }
         }
         else if(currentPanel.getClass().isInstance(new CombatPanel())){
             state = 1;
+            if(currentRoom.getType() == 5){
+                currentPanel.setText("You hear a load footsteps echo out as a large two head ogre appears in front of you. \n You can just make out a name tag beneath there neck that says fluffy.");
+            }
+            else {
+                currentPanel.setText("Upon entering the room you see three zombies in front of you. roll initiative");
+            }
         }
         else if(currentPanel.getClass().isInstance(new EndPanel())){
-            endGame();
+            endGame(true);
         }
         else if(currentPanel.getClass().isInstance(new SanctuaryPanel())){
             state = 1;
@@ -342,7 +375,7 @@ public class GameLogic implements ActionListener, ItemListener {
                     }
                 }
                 else if(signal == 3){
-
+                    //item panel not implemented
                 }
                 temp.updateEnemies(enemies);
                 combat.offerLast(currentPlayer);
@@ -352,6 +385,28 @@ public class GameLogic implements ActionListener, ItemListener {
             if(signal > 0){
                 signal--;
                 players[signal].updateHealth(-1 * Dice.rollD12(1, 0));
+            }
+        }
+        else if(currentPanel.getClass().isInstance(new DefaultPanel())){
+            if(signal == 1){
+                if(e.getActionCommand().equals("Interact") && currentRoom.hasItem()){
+                    players[0].pickItem(currentRoom.getItem());
+                }
+            }
+            else if(signal == 2){
+                if(e.getActionCommand().equals("Interact") && currentRoom.hasItem()){
+                    players[1].pickItem(currentRoom.getItem());
+                }
+            }
+            else if(signal == 3){
+                if(e.getActionCommand().equals("Interact") && currentRoom.hasItem()){
+                    players[2].pickItem(currentRoom.getItem());
+                }
+            }
+            else if(signal == 4){
+                if(e.getActionCommand().equals("Interact")){
+                    players[3].pickItem(currentRoom.getItem());
+                }
             }
         }
     }
@@ -364,72 +419,5 @@ public class GameLogic implements ActionListener, ItemListener {
         }
     }
 
-    /*
-    private boolean moveRooms(Player p, Integer pointer) {
-        if(!map.getRoom(pointer).isLocked()) {
-            enterRoom(p, pointer);
-            return true;
-        }
-        else {
-            if(!map.getRoom(pointer).unlock(p)) {
-                enterRoom(p, pointer);
-                return true;
-            }
-        }
-        return false;
-    }
-    private void enterRoom(Player p, Integer pointer) {
-        map.getRoom(p.getCurrentRoom()).removePlayer(p);
-        p.setCurrentRoom(pointer);
-        map.getRoom(pointer).addPlayer(p);
-    }
-    public String moveBack(Player p) {
-        Room r = map.getRoom(p.getCurrentRoom());
-        if(r.getBack() != null) {
-            if(moveRooms(p, r.getBack())) {
-                return "Proceeding on.";
-            }
-            else {
-                return "The door is locked...";
-            }
-        }
-        return "No way through...";
-    }
-    public String moveForward(Player p) {
-        Room r = map.getRoom(p.getCurrentRoom());
-        if(r.getForward() != null) {
-            if(moveRooms(p, r.getForward())) {
-                return "Proceeding on.";
-            }
-            else {
-                return "The door is locked...";
-            }
-        }
-        return "No way through...";
-    }
-    public String moveLeft(Player p) {
-        Room r = map.getRoom(p.getCurrentRoom());
-        if(r.getLeft() != null) {
-            if(moveRooms(p, r.getLeft())) {
-                return "Proceeding on.";
-            }
-            else {
-                return "The door is locked...";
-            }
-        }
-        return "No way through...";
-    }
-    public String moveRight(Player p) {
-        Room r = map.getRoom(p.getCurrentRoom());
-        if(r.getRight() != null) {
-            if(moveRooms(p, r.getRight())) {
-                return "Proceeding on.";
-            }
-            else {
-                return "The door is locked...";
-            }
-        }
-        return "No way through...";
-    }
-     */
+
 }

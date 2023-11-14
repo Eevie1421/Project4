@@ -45,9 +45,9 @@ public class MovePanel extends JPanel {
             roomPointers.put("forward", r.getForward());
         }
         if(r.getBack() != null){
-            back.setActionCommand("back");
-            back.setText("Back");
-            roomPointers.put("back", r.getBack());
+            back.setActionCommand("prev");
+            back.setText("Previous");
+            roomPointers.put("prev", r.getBack());
         }
         if(r.getLeft() != null){
             left.setText("Left");
