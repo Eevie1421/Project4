@@ -68,7 +68,7 @@ public class Player implements Creature{
         else{
             maxHealth = 25;
             health = 25;
-            playerAc = 12;
+            playerAc = 16;
             attackMod = 2;
             initiativeMod = 3;
         }

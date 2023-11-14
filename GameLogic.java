@@ -240,10 +240,10 @@ public class GameLogic implements ActionListener, ItemListener {
         if(currentPanel.getClass().isInstance(new DefaultPanel())){
             state = 1;
             if(currentRoom.getType() == 3){
-                currentPanel.setText("You find a chest in the middle of a small room. it looks unlocked...");
+                currentPanel.setText("You see something glinting off the torchlight in the middle of room.\n It looks like you can pick it up.");
             }
             else if(currentRoom.getType() == 2){
-                currentPanel.setText("(Placeholder for objective type rooms in future)");
+                currentPanel.setText("You unlock the door and come upon an empty room");
             }
         }
         else if(currentPanel.getClass().isInstance(new CombatPanel())){
@@ -375,7 +375,8 @@ public class GameLogic implements ActionListener, ItemListener {
                     }
                 }
                 else if(signal == 3){
-                    //item panel not implemented
+                    //item panel not implemented for now it checks if player has hp pot and uses it
+                    currentPlayer.useItem("Health pot");
                 }
                 temp.updateEnemies(enemies);
                 combat.offerLast(currentPlayer);

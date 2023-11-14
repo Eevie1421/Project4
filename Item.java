@@ -50,7 +50,7 @@ public class Item {
      */
     public int drinkPot(){
         uses --;
-        return Dice.rollD6(2,2);
+        return -1 * Dice.rollD6(2,2);
     }
 
     /**

@@ -99,10 +99,38 @@ public class CombatPanel extends JPanel  implements GamePanel{
         player2.useAbility.addActionListener(a);
         player3.useAbility.addActionListener(a);
         player4.useAbility.addActionListener(a);
-        player1.playerName.setText(players[0].getName());
-        player2.playerName.setText(players[1].getName());
-        player3.playerName.setText(players[2].getName());
-        player4.playerName.setText(players[3].getName());
+
+        if(players[0] != null && players[0].isALive()){
+            player1.playerName.setText(players[0].getName());
+        }
+        else{
+            player1.enterCombat();
+            remove(player1);
+        }
+
+        if(players[1] != null && players[1].isALive()){
+            player2.playerName.setText(players[1].getName());
+        }
+        else {
+            player2.enterCombat();
+            remove(player2);
+        }
+
+        if(players[2] != null && players[2].isALive()){
+            player3.playerName.setText(players[2].getName());
+        }
+        else {
+            player3.enterCombat();
+            remove(player3);
+        }
+
+        if(players[3] != null && players[3].isALive()){
+            player4.playerName.setText(players[3].getName());
+        }
+        else {
+            player4.enterCombat();
+            remove(player4);
+        }
 
         startCombat.addActionListener(a);
         nextTurn.addActionListener(a);

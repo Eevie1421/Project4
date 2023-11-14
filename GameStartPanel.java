@@ -27,9 +27,9 @@ public class GameStartPanel extends JPanel  implements GamePanel{
     public GameStartPanel(){
         classText = new Hashtable<>();
         String classBffr;
-        classBffr = "Fighter Class\n" + "Max Health: 30\n" + "Armor Class: 15\n" + "Attack Bonus: +3\n" + "Initiative Bonus: 0\n" + "Ability: none";
+        classBffr = "Fighter Class\n" + "Max Health: 30\n" + "Armor Class: 15\n" + "Attack Bonus: +3\n" + "Initiative Bonus: 0\n" + "Ability: sword spin";
         classText.put("Fighter", classBffr);
-        classBffr  = "Cleric Class\n" + "Max Health: 40\n" + "Armor Class: 12\n" + "Attack Bonus: +2\n" + "Initiative Bonus: 3\n" + "Ability: cure wounds";
+        classBffr  = "Cleric Class\n" + "Max Health: 25\n" + "Armor Class: 16\n" + "Attack Bonus: +2\n" + "Initiative Bonus: 3\n" + "Ability: cure wounds";
         classText.put("Cleric", classBffr);
         player1 = new CharSelect(1);
         player2 = new CharSelect(2);
