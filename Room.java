@@ -10,14 +10,13 @@ public class Room {
     //Attributes
     private String roomName;
     private Integer back, forward, left, right;
-    private ArrayList<Player> players;//Player in array if placed in bucket corresponding to room
     private ArrayList<Enemy> enemies;
     private int type;
     private Item item;
     private boolean locked;
     //Methods
     /**
-     * Constructor, sets room name, pointers to other rooms, initializes player and Enemy lists, and sets room type then
+     * Constructor, sets room name, pointers to other rooms, initializes Enemy list, and sets room type then
      * calls setType() to finish construction.
      * @param name String set to roomName
      * @param prev Integer set to back pointer
@@ -32,7 +31,6 @@ public class Room {
         forward = front;
         left = sideL;
         right = sideR;
-        players = new ArrayList<>();
         enemies = new ArrayList<>();
         type = rType;
         setType();
@@ -72,13 +70,6 @@ public class Room {
      */
     public Integer getRight(){
         return right;
-    }
-    /**
-     * Basic getter.
-     * @return attribute ArrayList<String> players
-     */
-    public ArrayList<Player> getPlayers() {
-        return players;
     }
     /**
      * Basic getter.
@@ -156,22 +147,6 @@ public class Room {
         }
     }
     /**
-     * Adds a Player to players list.
-     * @param p Player added to players
-     */
-    public void addPlayer(Player p) {
-        players.add(p);
-    }
-    /**
-     * Removes Player p if it exists in players list.
-     * @param p Player to be removed
-     */
-    public void removePlayer(Player p) {
-        if(players.contains(p)) {
-            players.remove(p);
-        }
-    }
-    /**
      * Sets item to Item i.
      * @param i Item set to item
      */
@@ -186,16 +161,6 @@ public class Room {
         enemies.add(e);
     }
     //Functional methods
-    /**
-     * Checks the enemies list for defeated enemies, then removes them from the list.
-     */
-    public void removeEnemy() {
-        for(Enemy e: enemies) {
-            if(!e.isAlive()) {
-                enemies.remove(e);
-            }
-        }
-    }
     /**
      * If a player has a key, set locked to false and return true, else return false.
      * @param p Player trying to unlock
