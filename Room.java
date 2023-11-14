@@ -4,7 +4,6 @@ public class Room {
     //Attributes
     private String roomName;
     private Integer back, forward, left, right;
-    private ArrayList<Player> players;//Player in array if placed in bucket corresponding to room
     private ArrayList<Enemy> enemies;
     private int type;
     private Item item;
@@ -26,7 +25,6 @@ public class Room {
         forward = front;
         left = sideL;
         right = sideR;
-        players = new ArrayList<>();
         enemies = new ArrayList<>();
         type = rType;
         setType();
@@ -46,9 +44,6 @@ public class Room {
     }
     public Integer getRight(){
         return right;
-    }
-    public ArrayList<Player> getPlayers() {
-        return players;
     }
     public ArrayList<Enemy> getEnemies() {
         return enemies;
@@ -101,30 +96,11 @@ public class Room {
             locked = false;
         }
     }
-    public void addPlayer(Player x) {
-        players.add(x);
-    }
-    public void removePlayer(Player x) {
-        if(players.contains(x)) {
-            players.remove(x);
-        }
-    }
     public void setItem(Item i) {
         item = i;
     }
     public void addEnemy(Enemy e) {
         enemies.add(e);
-    }
-    //Functional methods
-    /**
-     * Checks the enemies list for defeated enemies, then removes them from the list.
-     */
-    public void removeEnemy() {
-        for(Enemy e: enemies) {
-            if(!e.isAlive()) {
-                enemies.remove(e);
-            }
-        }
     }
     /**
      * If a player has a key, set locked to false and return true, else return false.

@@ -2,8 +2,10 @@
  *  Zombie has higher health but deals low damage and is very easy to hit
  */
 public class Zombie extends Enemy{
+    private String name;
     public Zombie(){
         super(12, 8, -1);
+        name = "Zombie";
     }
 
     /**
@@ -14,6 +16,11 @@ public class Zombie extends Enemy{
     @Override
     public int attackPlayer(int players) {
         return (int)(Math.random()*(players-1));
+    }
+
+    @Override
+    public boolean isALive() {
+        return checkStatus();
     }
 
     /**
@@ -35,5 +42,10 @@ public class Zombie extends Enemy{
     @Override
     public int rollInitiative() {
         return Dice.rollD20(1, -1);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

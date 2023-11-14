@@ -3,9 +3,11 @@
  */
 public class Boss extends Enemy{
     private boolean specialAttk;
+    private String name;
     public Boss(){
         super(75, 15, 3);
         specialAttk = false;
+        name = "Fluffy";
     }
 
     /**
@@ -23,6 +25,11 @@ public class Boss extends Enemy{
             player = -1;
         }
         return player;
+    }
+
+    @Override
+    public boolean isALive() {
+        return checkStatus();
     }
 
     /**
@@ -51,4 +58,11 @@ public class Boss extends Enemy{
     public int rollInitiative() {
         return Dice.rollD20(1, 5);
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+
 }

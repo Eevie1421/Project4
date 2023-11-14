@@ -6,6 +6,12 @@ public interface Creature {
     int getAc();
     //returns damage of an attack
     int attack(int ac);
+    //returns name of creature
+    String getName();
     //rollInitiative returns a value based on the individual creature that decides turn order in combat
     int rollInitiative();
+    //
+    int attackPlayer(int players);
+    //che
+    boolean isALive();
 }

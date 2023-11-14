@@ -31,7 +31,7 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
         p3Heal.setPreferredSize(new Dimension(1200, 200));
         p4Heal = new JButton("Player 4 Heal");
         p4Heal.setPreferredSize(new Dimension(1200, 200));
-        textArea = new JTextArea("You enter into a room with a campfire in the center.\n" + "You feel compelled to take a moment to rest and heal by the fire.\n");
+        textArea = new JTextArea();
         textArea.setPreferredSize(new Dimension(1600, 400));
         heal1used = false;
         heal2used = false;
@@ -66,7 +66,8 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
         add(textArea, c);
     }
 
-    public void activatePanel(ActionListener a, ItemListener e) {
+    @Override
+    public void activatePanel(ActionListener a, ItemListener e, Player[] players) {
         p1Heal.addActionListener(a);
         p2Heal.addActionListener(a);
         p3Heal.addActionListener(a);
@@ -74,6 +75,7 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
         moveRooms.addActionListener(a);
     }
 
+    @Override
     public int actionSignal(ActionEvent e){
         int actionType = -1;
         if(e.getSource().equals(moveRooms)){
@@ -96,5 +98,10 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
             heal4used = true;
         }
         return actionType;
+    }
+
+    @Override
+    public void setText(String s){
+
     }
 }

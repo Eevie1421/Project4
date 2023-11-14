@@ -62,15 +62,15 @@ public abstract class Enemy implements Creature{
      * isAlive - checks if the creature is alive
      * @return - returns the current status of the creature
      */
-    public boolean isAlive(){
+    public boolean checkStatus(){
         return status;
     }
 
     /**
-     * checkHealth - checks health of the creature
+     * getHealth - checks health of the creature
      * @return - health
      */
-    public int checkHealth(){
+    public int getHealth(){
         return health;
     }
 

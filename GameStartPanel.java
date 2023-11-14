@@ -82,7 +82,7 @@ public class GameStartPanel extends JPanel  implements GamePanel{
                 players[0] = new Player(player1.getPlayerName(), 2);
             }
         }
-        else if(player2.lockedIn){
+        if(player2.lockedIn){
             if(player2.playerClass.equals("Fighter")){
                 players[1] = new Player(player2.getPlayerName(), 1);
             }
@@ -90,7 +90,7 @@ public class GameStartPanel extends JPanel  implements GamePanel{
                 players[1] = new Player(player2.getPlayerName(), 2);
             }
         }
-        else if(player3.lockedIn){
+        if(player3.lockedIn){
             if(player3.playerClass.equals("Fighter")){
                 players[2] = new Player(player3.getPlayerName(), 1);
             }
@@ -98,7 +98,7 @@ public class GameStartPanel extends JPanel  implements GamePanel{
                 players[2] = new Player(player3.getPlayerName(), 2);
             }
         }
-        else if(player4.lockedIn){
+        if(player4.lockedIn){
             if(player4.playerClass.equals("Fighter")){
                 players[3] = new Player(player4.getPlayerName(), 1);
             }
@@ -130,7 +130,6 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         int sig = -1;
         if(e.getActionCommand().equals("Add")){
             addPlayer(e);
-            sig = 0;
         }
         else if(e.getActionCommand().equals("Lock In")){
             if(e.getSource().equals(player1.lockInButton)){
@@ -150,6 +149,11 @@ public class GameStartPanel extends JPanel  implements GamePanel{
             sig = 1;
         }
         return sig;
+    }
+
+    @Override
+    public void setText(String s) {
+
     }
 
     private void lockIn(int player){
@@ -294,7 +298,8 @@ public class GameStartPanel extends JPanel  implements GamePanel{
             player4.classStats.setText(text);
         }
     }
-    public void activatePanel(ActionListener a, ItemListener i) {
+    @Override
+    public void activatePanel(ActionListener a, ItemListener i, Player[] players) {
         player1.start.addActionListener(a);
         player2.start.addActionListener(a);
         player3.start.addActionListener(a);

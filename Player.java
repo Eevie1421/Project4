@@ -2,7 +2,7 @@ import java.util.Hashtable;
 import java.util.Scanner;
 
 public class Player implements Creature{
-    //status 0 is default, 1 is unconscious, 2 is dead. Room for more types later.
+    //status 0 is default, 1 is dead. Room for more types later.
     private int status;
     private int maxHealth;
     private int health;
@@ -29,10 +29,12 @@ public class Player implements Creature{
         this("John", 1);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public int getAc(){
         return playerAc;
     }
@@ -90,9 +92,6 @@ public class Player implements Creature{
         else if(health > maxHealth){
             health = maxHealth;
         }
-        if(status > 0 && health > 0){
-            status = 0;
-        }
     }
     public void pickItem(Item item){
         backpack.put(item.getType(), item);
@@ -139,6 +138,12 @@ public class Player implements Creature{
     public int rollInitiative() {
         return Dice.rollD20(1, initiativeMod);
     }
+
+    @Override
+    public int attackPlayer(int players) {
+        return 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(super.equals(o) && getClass() == o.getClass()) {
@@ -147,5 +152,10 @@ public class Player implements Creature{
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isALive() {
+        return status != 1;
     }
 }

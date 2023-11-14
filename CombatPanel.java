@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 public class CombatPanel extends JPanel  implements GamePanel{
     private playerPanel player1;
@@ -11,19 +12,26 @@ public class CombatPanel extends JPanel  implements GamePanel{
     private playerPanel player4;
     private JTextArea textarea;
     private JPanel combatUi;
+    private JButton startCombat;
+    private JButton nextTurn;
+    private ArrayList<Enemy> enemies;
+    private ArrayList<JTextArea> enemyStatus;
+    private JButton moveButton;
+    private boolean complete;
 
 
-    public CombatPanel(){
-        player1 = new playerPanel("Joe1");
-        player2 = new playerPanel("Joe2");
-        player3 = new playerPanel("Joe3");
-        player4 = new playerPanel("Joe4");
+    public CombatPanel(Player[] players){
+        player1 = new playerPanel(players[0].getName());
+        player2 = new playerPanel(players[1].getName());
+        player3 = new playerPanel(players[2].getName());
+        player4 = new playerPanel(players[3].getName());
         textarea = new JTextArea();
         textarea.setPreferredSize(new Dimension(1600, 400));
         textarea.setText("Test");
         combatUi = new JPanel();
         combatUi.setPreferredSize(new Dimension(400, 800));
-        JButton startCombat = new JButton("Start Combat");
+        startCombat = new JButton("Start Combat");
+        startCombat.setActionCommand("Start Combat");
         startCombat.setPreferredSize(new Dimension(400, 800));
         combatUi.add(startCombat);
 
@@ -58,10 +66,23 @@ public class CombatPanel extends JPanel  implements GamePanel{
         c.gridheight = 4;
         add(textarea, c);
 
+        enemies = new ArrayList<>();
+        enemyStatus = new ArrayList<>();
+        nextTurn = new JButton("Take next turn");
+        nextTurn.setPreferredSize(new Dimension(400, 200));
+        nextTurn.setActionCommand("Next Turn");
+
+        moveButton = new JButton("Move rooms");
+        moveButton.setPreferredSize(new Dimension(400, 800));
+        moveButton.setActionCommand("Move");
+    }
+
+    public CombatPanel(){
+        this(new Player[]{new Player("Joe", 1), new Player("Jim",1), new Player("Jill", 0), new Player("Greg", 0)});
     }
 
     @Override
-    public void activatePanel(ActionListener a, ItemListener e) {
+    public void activatePanel(ActionListener a, ItemListener e, Player[] players) {
         player1.attack.addActionListener(a);
         player2.attack.addActionListener(a);
         player3.attack.addActionListener(a);
@@ -78,47 +99,109 @@ public class CombatPanel extends JPanel  implements GamePanel{
         player2.useAbility.addActionListener(a);
         player3.useAbility.addActionListener(a);
         player4.useAbility.addActionListener(a);
+        player1.playerName.setText(players[0].getName());
+        player2.playerName.setText(players[1].getName());
+        player3.playerName.setText(players[2].getName());
+        player4.playerName.setText(players[3].getName());
+
+        startCombat.addActionListener(a);
+        nextTurn.addActionListener(a);
+        moveButton.addActionListener(a);
     }
 
+    @Override
     public int actionSignal(ActionEvent e){
-        int actionType = -1;
+        int actionType = -6;
         if(e.getSource().equals(player1.rollInitiative)){
             player1.enterCombat();
-            actionType = 0;
+            actionType = -1;
         }
         else if(e.getSource().equals(player2.rollInitiative)){
             player2.enterCombat();
-            actionType = 0;
+            actionType = -2;
         }
         else if(e.getSource().equals(player3.rollInitiative)){
             player3.enterCombat();
-            actionType = 0;
+            actionType = -3;
         }
         else if(e.getSource().equals(player4.rollInitiative)){
             player4.enterCombat();
-            actionType = 0;
+            actionType = -4;
         }
         else if(e.getActionCommand().equals("atk")){
             actionType = 1;
-            textarea.setText("Haiiiiiiii!!!! :3");
         }
         else if(e.getActionCommand().equals("abl")){
             actionType = 2;
-            textarea.setText("Haiiiiiiii!!!! :3");
         }
         else if(e.getActionCommand().equals("itm")) {
             actionType = 3;
-            textarea.setText("Haiiiiiiii!!!! :3");
+        }
+        else if(e.getActionCommand().equals("Move")){
+            actionType = 0;
+        }
+        else if(e.getActionCommand().equals("Next Turn")){
+            actionType = -5;
         }
         return actionType;
     }
 
-    private class playerPanel extends JPanel{
+    @Override
+    public void setText(String s) {
+        textarea.setText(s);
+    }
+
+    public void beginCombat(ArrayList<Enemy> enemies1){
+        enemies.addAll(enemies1);
+        combatUi.remove(startCombat);
+        combatUi.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;;
+        c.fill = GridBagConstraints.BOTH;
+        c.weighty = 1;
+        c.weightx = 1;
+        for(int i = 0; i < enemies.size(); i++){
+            c.gridy = i;
+            Enemy temp = enemies.get(i);
+            enemyStatus.add(new JTextArea(temp.getName() + i +" HP: " + temp.getHealth()));
+            enemyStatus.get(i).setPreferredSize(new Dimension(400, 100));
+            combatUi.add(enemyStatus.get(i), c);
+        }
+        c.gridy = enemies.size();
+        combatUi.add(nextTurn, c);
+        combatUi.revalidate();
+    }
+
+    public void updateEnemies(ArrayList<Enemy> e){
+        enemies = e;
+        for(int i = 0; i < e.size(); i++){
+            Enemy temp = e.get(i);
+            if(!temp.isALive()){
+                enemyStatus.get(i).setText(temp.getName() + i + " DEAD");
+            }
+            enemyStatus.get(i).setText(temp.getName() + i + " HP: " + temp.getHealth());
+        }
+    }
+    public void endCombat(){
+        for(JTextArea t : enemyStatus){
+            combatUi.remove(t);
+        }
+        combatUi.remove(nextTurn);
+        combatUi.add(moveButton);
+        revalidate();
+    }
+
+    public boolean isCombatReady(){
+        return player1.inCombat && player2.inCombat && player3.inCombat && player4.inCombat;
+    }
+
+    private static class playerPanel extends JPanel{
         private JTextArea playerName;
         private JButton attack;
         private JButton item;
         private JButton rollInitiative;
         private JButton useAbility;
+        private boolean inCombat;
         private playerPanel(String name){
             rollInitiative = new JButton("Roll Initiative");
             rollInitiative.setPreferredSize(new Dimension(1200, 200));
@@ -134,9 +217,12 @@ public class CombatPanel extends JPanel  implements GamePanel{
             item.setActionCommand("itm");
             item.setPreferredSize(new Dimension(300, 200));
             add(rollInitiative);
+            inCombat = false;
         }
         private void enterCombat(){
             remove(rollInitiative);
+            inCombat = true;
+
             setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;

@@ -14,8 +14,9 @@ public class DefaultPanel extends JPanel implements GamePanel {
 
     public DefaultPanel(int playerNum){
         this.players = new playerPane[playerNum];
-        txt = new JTextArea("We will put room intros here. we can get this from room class");
+        txt = new JTextArea();
         moveRooms = new JButton("Move Rooms");
+        moveRooms.setActionCommand("Move");
         moveRooms.setPreferredSize(new Dimension(400,800));
         txt.setPreferredSize(new Dimension(1600, 400));
         setPreferredSize(new Dimension(1600, 1200));
@@ -42,12 +43,12 @@ public class DefaultPanel extends JPanel implements GamePanel {
         c.gridheight = 1;
         for(int i = 0; i < playerNum; i++){
             c.gridx = 2;
-            players[i] = new playerPane("TEST", 0);
-            add(players[i].getStatus(), c);
+            this.players[i] = new playerPane("TEST", 0);
+            add(this.players[i].getStatus(), c);
             c.gridx = 4;
-            add(players[i].getItems(), c);
+            add(this.players[i].getItems(), c);
             c.gridx = 6;
-            add(players[i].getInteract(), c);
+            add(this.players[i].getInteract(), c);
             c.gridy = i + 1;
         }
 
@@ -61,15 +62,20 @@ public class DefaultPanel extends JPanel implements GamePanel {
 
     }
 
-    public void setText(String newText){
-        txt.setText(newText);
+    @Override
+    public void setText(String s){
+        txt.setText(s);
     }
     @Override
-    public void activatePanel(ActionListener a, ItemListener e) {
+    public void activatePanel(ActionListener a, ItemListener e, Player[] names) {
         moveRooms.addActionListener(a);
         for (playerPane player : players) {
             player.setButtons(a);
         }
+        players[0].status.setText(names[0].getName() + " Health : " + names[0].checkHealth());
+        players[1].status.setText(names[0].getName() + " Health : " + names[1].checkHealth());
+        players[2].status.setText(names[0].getName() + " Health : " + names[2].checkHealth());
+        players[3].status.setText(names[0].getName() + " Health : " + names[3].checkHealth());
     }
 
     @Override
