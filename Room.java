@@ -1,5 +1,11 @@
 import java.util.ArrayList;
-
+/**
+ * Creates a Room object which players occupy and move between to progress through the game.
+ * Has a type value that tells the game how to construct them or act when players are present.
+ * type 0 = start, type 1 = combat, type 2 = objective, type 3 = item, type 4 = heal, type 5 = boss, type 6 = end.
+ * May be locked, or contain enemies or necessary items.
+ * @author Jonathan Murphy, Evelyn Totman, Salim Jday
+ */
 public class Room {
     //Attributes
     private String roomName;

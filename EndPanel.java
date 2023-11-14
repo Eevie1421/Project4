@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * A simple Panel that displays a message.
+ * @author Jonathan Murphy
+ */
 public class EndPanel extends JPanel {
     private JTextArea message;
 

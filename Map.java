@@ -1,5 +1,9 @@
 import java.util.HashMap;
-
+/**
+ * Creates a HashMap containing Room objects with pointers representing the keys of other Rooms.
+ * The resulting object acts as a traversable map for players to advance through.
+ * @author Jonathan Murphy, Evelyn Totman, Salim Jday
+ */
 public class Map {
     //Attributes
     private HashMap<Integer, Room> rooms;
