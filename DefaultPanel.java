@@ -13,14 +13,15 @@ public class DefaultPanel extends JPanel implements GamePanel {
     private JButton moveRooms;
 
     public DefaultPanel(int playerNum){
+        setPreferredSize(new Dimension(1600, 1200));
+        setLayout(new GridBagLayout());
         this.players = new playerPane[playerNum];
         txt = new JTextArea();
         moveRooms = new JButton("Move Rooms");
         moveRooms.setActionCommand("Move");
         moveRooms.setPreferredSize(new Dimension(400,800));
         txt.setPreferredSize(new Dimension(1600, 400));
-        setPreferredSize(new Dimension(1600, 1200));
-        setLayout(new GridBagLayout());
+
         GridBagConstraints c = new GridBagConstraints();
         c.fill =BOTH;
         c.weightx = 1;
@@ -46,7 +47,6 @@ public class DefaultPanel extends JPanel implements GamePanel {
             add(players[i], c);
             c.gridy = i + 1;
         }
-
     }
 
     public DefaultPanel(){
@@ -64,14 +64,13 @@ public class DefaultPanel extends JPanel implements GamePanel {
             player.setButtons(a);
         }
         for(int i = 0; i < names.length; i++){
-            if(!names[i].isALive()){
+            if(names[i] == null || !names[i].isALive()){
                 remove(players[i]);
             }
+            else {
+                players[i].status.setText(names[0].getName() + " Health : " + names[i].checkHealth());
+            }
         }
-        players[0].status.setText(names[0].getName() + " Health : " + names[0].checkHealth());
-        players[1].status.setText(names[0].getName() + " Health : " + names[1].checkHealth());
-        players[2].status.setText(names[0].getName() + " Health : " + names[2].checkHealth());
-        players[3].status.setText(names[0].getName() + " Health : " + names[3].checkHealth());
         revalidate();
     }
 
@@ -89,12 +88,14 @@ public class DefaultPanel extends JPanel implements GamePanel {
         return signal;
     }
 
-    private class playerPane extends JComponent{
+    private class playerPane extends JPanel{
         private JButton items;
         private JButton interact;
         private JTextArea status;
 
         private playerPane(String name, int health){
+            setPreferredSize(new Dimension(1200, 200));
+            setLayout(new GridBagLayout());
             status = new JTextArea(name + ": " + health);
             items = new JButton("Use Item");
             interact = new JButton("Interact");
@@ -103,11 +104,25 @@ public class DefaultPanel extends JPanel implements GamePanel {
             status.setPreferredSize(new Dimension(400, 200));
             items.setActionCommand("Item");
             interact.setActionCommand("Interact");
+
+            GridBagConstraints c = new GridBagConstraints();
+
+            c.gridx = 0;
+            c.gridy = 0;
+            c.fill = BOTH;
+            c.weighty = 1;
+            c.weightx = 1;
+            add(status, c);
+            c.gridx = 1;
+            add(interact, c);
+            c.gridx = 2;
+            add(items, c);
         }
 
         private void setButtons(ActionListener a){
             items.addActionListener(a);
             interact.addActionListener(a);
+            revalidate();
         }
 
 

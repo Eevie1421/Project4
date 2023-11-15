@@ -101,7 +101,7 @@ public class CombatPanel extends JPanel  implements GamePanel{
         player4.useAbility.addActionListener(a);
 
         if(players[0] != null && players[0].isALive()){
-            player1.playerName.setText(players[0].getName());
+            player1.playerName.setText(players[0].getName() + "| HP: " + players[0].checkHealth());
         }
         else{
             player1.enterCombat();
@@ -109,7 +109,7 @@ public class CombatPanel extends JPanel  implements GamePanel{
         }
 
         if(players[1] != null && players[1].isALive()){
-            player2.playerName.setText(players[1].getName());
+            player2.playerName.setText(players[1].getName() + "| HP: " + players[1].checkHealth());
         }
         else {
             player2.enterCombat();
@@ -117,7 +117,7 @@ public class CombatPanel extends JPanel  implements GamePanel{
         }
 
         if(players[2] != null && players[2].isALive()){
-            player3.playerName.setText(players[2].getName());
+            player3.playerName.setText(players[2].getName() + "| HP: " + players[2].checkHealth());
         }
         else {
             player3.enterCombat();
@@ -125,7 +125,7 @@ public class CombatPanel extends JPanel  implements GamePanel{
         }
 
         if(players[3] != null && players[3].isALive()){
-            player4.playerName.setText(players[3].getName());
+            player4.playerName.setText(players[3].getName() + "| HP: " + players[3].checkHealth());
         }
         else {
             player4.enterCombat();
@@ -200,14 +200,33 @@ public class CombatPanel extends JPanel  implements GamePanel{
         combatUi.revalidate();
     }
 
-    public void updateEnemies(ArrayList<Enemy> e){
+    public boolean updateEnemies(ArrayList<Enemy> e){
+        boolean cleared = true;
         enemies = e;
         for(int i = 0; i < e.size(); i++){
             Enemy temp = e.get(i);
             if(!temp.isALive()){
                 enemyStatus.get(i).setText(temp.getName() + i + " DEAD");
             }
-            enemyStatus.get(i).setText(temp.getName() + i + " HP: " + temp.getHealth());
+            else{
+                enemyStatus.get(i).setText(temp.getName() + i + " HP: " + temp.getHealth());
+                cleared = false;
+            }
+        }
+        return cleared;
+    }
+    public void updatePlayers(Player[] p){
+        if(p[0] != null){
+            player1.playerName.setText(p[0].getName() + "| HP: " + p[0].checkHealth());
+        }
+        if(p[1] != null){
+            player2.playerName.setText(p[1].getName() + "| HP: " + p[1].checkHealth());
+        }
+        if(p[2] != null){
+            player3.playerName.setText(p[2].getName() + "| HP: " + p[2].checkHealth());
+        }
+        if(p[3] != null){
+            player4.playerName.setText(p[3].getName() + "| HP: " + p[3].checkHealth());
         }
     }
     public void endCombat(){

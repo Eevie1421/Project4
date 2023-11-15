@@ -7,6 +7,7 @@ public class Room {
     private ArrayList<Enemy> enemies;
     private int type;
     private Item item;
+    private boolean cleared;
     private boolean locked;
     //Methods
     /**
@@ -27,6 +28,7 @@ public class Room {
         right = sideR;
         enemies = new ArrayList<>();
         type = rType;
+        cleared = false;
         setType();
     }
     //getter methods
@@ -60,6 +62,15 @@ public class Room {
     public boolean isLocked() {
         return locked;
     }
+
+    public boolean isCleared() {
+        return cleared;
+    }
+
+    public void setCleared(boolean cleared) {
+        this.cleared = cleared;
+    }
+
     //setter type methods
     private void setType() {
         if(type == 1) {
