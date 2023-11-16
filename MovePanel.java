@@ -13,7 +13,7 @@ public class MovePanel extends JPanel {
     public MovePanel(Room r){
         setPreferredSize(new Dimension(900, 900));
         setLayout(new GridBagLayout());
-        roomPointers = new Hashtable<>(4);
+        roomPointers = new Hashtable<>(7);
         forward = new JButton("NO DOOR HERE");
         forward.setPreferredSize(new Dimension(300, 300));
         back = new JButton("NO DOOR HERE");
@@ -82,6 +82,8 @@ public class MovePanel extends JPanel {
             JButton temp = (JButton) obj;
             return temp.equals(forward) || temp.equals(back) || temp.equals(left) || temp.equals(right);
         }
-        return false;
+        else {
+            return false;
+        }
     }
 }

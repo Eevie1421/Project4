@@ -9,6 +9,8 @@ public class Room {
     private Item item;
     private boolean cleared;
     private boolean locked;
+    private String intro;
+    private String clearedText;
     //Methods
     /**
      * Constructor, sets room name, pointers to other rooms, initializes player and Enemy lists, and sets room type then
@@ -79,29 +81,43 @@ public class Room {
             enemies.add(new Zombie());
             enemies.add(new Zombie());
             enemies.add(new Zombie());
+            intro = "Upon entering the room you see three zombies in front of you. roll initiative";
+            clearedText = "The bodies of the zombies still lay upon the ground. You silently pray it stays that way";
         }
         else if(type == 2) {
             item = null;
             locked = true;
+            intro = "You feel a cool breeze sweep through chilling you to your bones";
+            clearedText = "You feel a cool breeze sweep through chilling you to your bones";
         }
         else if(type == 3) {
             item = new Item(0);
             locked = false;
+            intro = "You see something glinting off the torchlight in the middle of room.\n It looks like you can pick it up.";
+            clearedText = "You see nothing but rocks and dirt";
             //something for item pickups
         }
         else if(type == 4) {
             item = null;
             locked = false;
+            intro = "You enter into a room with a campfire in the center.\n" + "You feel compelled to take a moment to rest and heal by the fire.\n";
+            clearedText = "The warmth has faded from the fire you feel it will not be safe to linger";
             //something for healing
         }
         else if(type == 5) {
             item = null;
-            locked = false;
+            locked = true;
             enemies.add(new Boss());
+            intro = "As you enter a large open room you hear load snoring echoing out from deeper within. " +
+                    "As you get closer you can see a massive three headed dog sleeping with its head on its paws." +
+                    "Suddenly as you approach it wakes up and lets out a massive roar. roll initiative";
+            clearedText = "As the dust settles the large creature can be seen slain in the middle of the room";
         }
         else {
             item = null;
             locked = false;
+            intro = "";
+            clearedText = "";
         }
     }
     public void setItem(Item i) {
@@ -109,6 +125,19 @@ public class Room {
     }
     public void addEnemy(Enemy e) {
         enemies.add(e);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getText(){
+        if(isCleared()){
+            return clearedText;
+        }
+        else {
+            return intro;
+        }
     }
     /**
      * If a player has a key, set locked to false and return true, else return false.

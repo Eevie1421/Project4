@@ -12,10 +12,6 @@ public class GameLogic implements ActionListener, ItemListener {
     private Player[] players;
     private Room currentRoom;
     private GamePanel currentPanel;
-    //state 0: Character selection
-    //state 1: Non combat
-    //state 2: combat
-    private int state;
     private Map map;
     private JFrame gui;
     private Hashtable<Integer, JPanel> panelMap;
@@ -25,12 +21,9 @@ public class GameLogic implements ActionListener, ItemListener {
     private LinkedList<Creature> combat;
     private ArrayList<Enemy> enemies;
     private int[] initiative;
-    private JPanel test;
+    private int turn;
 
     public GameLogic() {
-        test = new JPanel();
-        test.setPreferredSize(new Dimension(1600, 1200));
-        test.add(new JTextArea("test works"));
 
         move = new JFrame("Move Panel");
         move.setSize(900,900);
@@ -41,7 +34,6 @@ public class GameLogic implements ActionListener, ItemListener {
         gui.setSize(1600, 1200);
         gui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         players = new Player[4];
-        state = 0;
         this.map = new Map();
         currentRoom = map.getRoom(0);
         panelMap = new Hashtable<>(13);
@@ -73,7 +65,6 @@ public class GameLogic implements ActionListener, ItemListener {
         enemies = new ArrayList<>();
         initiative = new int[]{-1, -1, -1, -1, -1};
         startGame();
-
     }
 
     private void startGame(){
@@ -152,10 +143,12 @@ public class GameLogic implements ActionListener, ItemListener {
                 combat.offer(players[order[i]]);
             }
         }
-        state = 2;
         takeNextTurn();
     }
 
+    /**
+     *
+     */
     private void takeNextTurn(){
         if(!combat.isEmpty()){
             Creature temp = combat.poll();
@@ -177,34 +170,40 @@ public class GameLogic implements ActionListener, ItemListener {
                         }
                     }
                     int playerAttacked = temp.attackPlayer(alivePlayers);
-                    if(playerAttacked < 0){
+                    if(playerAttacked < 0) {
                         int damage = temp.attack(0);
-                        for(Player p : players){
-                            if(p != null){
+                        currentPanel.setText("AOE attack add text later " + damage);
+                        for (Player p : players) {
+                            if (p != null) {
                                 p.updateHealth(damage);
-                                if(!p.isALive()){
+                                if (!p.isALive()) {
                                     currentPanel.setText(p.getName() + " is dead");
                                     combat.remove(p);
                                 }
                             }
                         }
-                    }
-                    Player target = players[playerAttacked];
-                    if(target == null || !target.isALive()){
-                        combat.offerFirst(temp);
-                        takeNextTurn();
-                    }
-                    else{
-                        int damage = temp.attack(target.getAc());
-                        target.updateHealth(damage);
-                        currentPanel.setText(target.getName() + " took " + damage + " damage." + "\n" + "HP: " + target.checkHealth());
                         combat.offerLast(temp);
-                        if(!target.isALive()){
-                            currentPanel.setText(target.getName() + " is dead");
-                            combat.remove(target);
-                        }
                         CombatPanel c = (CombatPanel) currentPanel;
                         c.updatePlayers(players);
+                    }
+                    else {
+                        Player target = players[playerAttacked];
+                        if(target == null || !target.isALive()){
+                            combat.offerFirst(temp);
+                            takeNextTurn();
+                        }
+                        else{
+                            int damage = temp.attack(target.getAc());
+                            target.updateHealth(damage);
+                            currentPanel.setText(target.getName() + " took " + damage + " damage." + "\n" + "HP: " + target.checkHealth());
+                            combat.offerLast(temp);
+                            if(!target.isALive()){
+                                currentPanel.setText(target.getName() + " is dead");
+                                combat.remove(target);
+                            }
+                            CombatPanel c = (CombatPanel) currentPanel;
+                            c.updatePlayers(players);
+                        }
                     }
                 }
                 else{
@@ -228,7 +227,11 @@ public class GameLogic implements ActionListener, ItemListener {
             }
         }
         initiative = new int[]{-1, -1, -1, -1, -1};
-        state = 1;
+        if(currentRoom.getType() == 5 && checkPlayers()){
+            currentRoom.setCleared(true);
+            currentPanel.setText(currentRoom.getText());
+            endGame(true);
+        }
         currentRoom.setCleared(true);
     }
 
@@ -242,45 +245,17 @@ public class GameLogic implements ActionListener, ItemListener {
 
     private void moveRooms(Integer i){
         gui.remove((JPanel) currentPanel);
+        currentRoom.setCleared(true);
         currentRoom = map.getRoom(i);
-        if(currentRoom.isCleared()){
-            currentPanel = new DefaultPanel();
-            currentPanel.setText("You come upon a familar looking room...");
+        currentPanel = (GamePanel) panelMap.get(i);
+        if(!currentRoom.isCleared()){
+            currentPanel.activatePanel(this, this, players);
         }
-        else{
-            currentPanel = (GamePanel) panelMap.get(i);
-        }
-        currentPanel.activatePanel(this, this, players);
         gui.add((JPanel) currentPanel);
         gui.pack();
-
-
-        if(currentPanel.getClass().isInstance(new DefaultPanel()) && !currentRoom.isCleared()){
-            state = 1;
-            if(currentRoom.getType() == 3){
-                currentPanel.setText("You see something glinting off the torchlight in the middle of room.\n It looks like you can pick it up.");
-            }
-            else if(currentRoom.getType() == 2){
-                currentPanel.setText("You unlock the door and come upon an empty room");
-            }
-        }
-        else if(currentPanel.getClass().isInstance(new CombatPanel())){
-            state = 1;
-            if(currentRoom.getType() == 5){
-                currentPanel.setText("You hear a load footsteps echo out as a large two head ogre appears in front of you. \n You can just make out a name tag beneath there neck that says fluffy.");
-            }
-            else {
-                currentPanel.setText("Upon entering the room you see three zombies in front of you. roll initiative");
-            }
-        }
-        else if(currentPanel.getClass().isInstance(new EndPanel())){
-            endGame(true);
-        }
-        else if(currentPanel.getClass().isInstance(new SanctuaryPanel())){
-            state = 1;
-            currentPanel.setText("You enter into a room with a campfire in the center.\n" + "You feel compelled to take a moment to rest and heal by the fire.\n");
-        }
+        currentPanel.setText(currentRoom.getText());
         gui.revalidate();
+
         moving = false;
         move.remove(movePanel);
         move.revalidate();
@@ -362,7 +337,7 @@ public class GameLogic implements ActionListener, ItemListener {
                     initiative[3] = players[3].rollInitiative();
                 }
             }
-            if(signal > 0 && state == 2){
+            if(signal > 0){
                 //add specific targets as a later functionality
                 Player currentPlayer = (Player) combat.poll();
                 if(signal == 1){
@@ -420,7 +395,9 @@ public class GameLogic implements ActionListener, ItemListener {
         else if(currentPanel.getClass().isInstance(new SanctuaryPanel())){
             if(signal > 0){
                 signal--;
-                players[signal].updateHealth(-1 * Dice.rollD12(1, 0));
+                int heal = -1 * Dice.rollD12(1, 0);
+                players[signal].updateHealth(heal);
+                currentPanel.setText(players[signal].getName() + " heals for " + heal + " health.");
             }
         }
         else if(currentPanel.getClass().isInstance(new DefaultPanel())){
@@ -456,6 +433,24 @@ public class GameLogic implements ActionListener, ItemListener {
                         currentRoom.setCleared(true);
                         currentPanel.setText(players[3].getName() + " pulls a shiny gold key from the floor.");
                     }
+                }
+            }
+            else if(e.getActionCommand().equals("Item")){
+                if (signal == 1) {
+                    players[0].useItem("Health pot");
+                    currentPanel.setText(players[0].getName() + "drinks a health pot");
+                }
+                else if(signal == 2){
+                    players[1].useItem("Health pot");
+                    currentPanel.setText(players[1].getName() + "drinks a health pot");
+                }
+                else if(signal == 3){
+                    players[2].useItem("Health pot");
+                    currentPanel.setText(players[2].getName() + "drinks a health pot");
+                }
+                else if(signal == 4){
+                    players[3].useItem("Health pot");
+                    currentPanel.setText(players[3].getName() + "drinks a health pot");
                 }
             }
         }

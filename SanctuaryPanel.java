@@ -69,16 +69,16 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
 
     @Override
     public void activatePanel(ActionListener a, ItemListener e, Player[] players) {
-        if(players[0].isALive()){
+        if(players[0] != null && players[0].isALive()){
             p1Heal.addActionListener(a);
         }
-        else if(players[1].isALive()){
+        else if(players[1] != null && players[1].isALive()){
             p2Heal.addActionListener(a);
         }
-        else if(players[2].isALive()){
+        else if(players[2] != null && players[2].isALive()){
             p3Heal.addActionListener(a);
         }
-        else if(players[3].isALive()){
+        else if(players[3] != null && players[3].isALive()){
             p4Heal.addActionListener(a);
         }
         moveRooms.addActionListener(a);

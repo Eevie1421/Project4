@@ -68,7 +68,7 @@ public class DefaultPanel extends JPanel implements GamePanel {
                 remove(players[i]);
             }
             else {
-                players[i].status.setText(names[0].getName() + " Health : " + names[i].checkHealth());
+                players[i].status.setText(names[i].getName() + " Health : " + names[i].checkHealth());
             }
         }
         revalidate();

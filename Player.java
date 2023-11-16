@@ -101,7 +101,7 @@ public class Player implements Creature{
             return false;
         }
         int val = temp.use();
-        if(temp.outOfCharges()){
+        if(val == 1){
             backpack.remove(key);
         }
         if(key.equals("Health pot")){

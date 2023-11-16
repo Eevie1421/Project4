@@ -58,12 +58,7 @@ public class Item {
      * @return - true if an item is out of charges false if it still has some.
      */
     public boolean outOfCharges(){
-        if(uses <= 0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return uses <= 0;
     }
 
     public String getType() {
