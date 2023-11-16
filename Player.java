@@ -93,7 +93,7 @@ public class Player implements Creature{
     }
 
     public boolean useItem(String key) {
-        if(!backpack.contains(key)) {
+        if(!backpack.containsKey(key)) {
             return false;
         }
         Item temp = backpack.get(key);

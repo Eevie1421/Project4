@@ -298,7 +298,7 @@ public class GameLogic implements ActionListener, ItemListener {
                 if(map.getRoom(moveSignal).isLocked()){
                     locked = true;
                     for(Player p : players){
-                        if(map.getRoom(moveSignal).unlock(p)){
+                        if(p != null && map.getRoom(moveSignal).unlock(p)){
                             locked = false;
                             break;
                         }
@@ -314,6 +314,9 @@ public class GameLogic implements ActionListener, ItemListener {
                     move.revalidate();
                     move.setVisible(false);
                 }
+            }
+            else{
+                return;
             }
         }
         int signal;

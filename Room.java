@@ -116,11 +116,13 @@ public class Room {
      * @return true if successful
      */
     public boolean unlock(Player player) {
-        if(player.useItem("key")) {
+        if(player.useItem("Key")) {
             locked = false;
             return true;//If player has key, set locked to false and remove key
         }
-        return false;
+        else{
+            return false;
+        }
     }
     @Override
     public boolean equals(Object o) {

@@ -80,7 +80,7 @@ public class MovePanel extends JPanel {
         if(obj == null) return false;
         if(obj.getClass().isInstance(new JButton())){
             JButton temp = (JButton) obj;
-            return obj.equals(forward) || obj.equals(back) || obj.equals(left) || obj.equals(right);
+            return temp.equals(forward) || temp.equals(back) || temp.equals(left) || temp.equals(right);
         }
         return false;
     }

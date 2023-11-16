@@ -4,7 +4,7 @@
 public class Zombie extends Enemy{
     private String name;
     public Zombie(){
-        super(12, 8, -1);
+        super(12, 10, 1);
         name = "Zombie";
     }
 
@@ -34,7 +34,7 @@ public class Zombie extends Enemy{
         int attackRoll = Dice.rollD20(1, getAttackMod());
         int damageRoll = 0;
         if(attackRoll >= ac){
-            damageRoll = Dice.rollD6(1,0);
+            damageRoll = Dice.rollD10(1,getAttackMod());
         }
         return damageRoll;
     }
