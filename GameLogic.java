@@ -35,31 +35,29 @@ public class GameLogic implements ActionListener, ItemListener {
         gui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         players = new Player[4];
         this.map = new Map();
-        currentRoom = map.getRoom(0);
-        panelMap = new Hashtable<>(13);
+        currentRoom = map.getRoom(map.getKeys().get(0));
+        panelMap = new Hashtable<>(27);
         Room temp;
-        for(int i = 0; i < 13; i++){
-            temp = map.getRoom(i);
+        for(int i = 0; i < 12; i++){
+            int key = map.getKeys().get(i);
+            temp = map.getRoom(key);
             if(temp.getType() == 0){
-                panelMap.put(i, new GameStartPanel());
+                panelMap.put(key, new GameStartPanel());
             }
             else if(temp.getType() == 1){
-                panelMap.put(i, new CombatPanel());
+                panelMap.put(key, new CombatPanel());
             }
             else if(temp.getType() > 1 && temp.getType() < 4){
-                panelMap.put(i, new DefaultPanel());
+                panelMap.put(key, new DefaultPanel());
             }
             else if(temp.getType() == 4){
-                panelMap.put(i, new SanctuaryPanel());
+                panelMap.put(key, new SanctuaryPanel());
             }
             else if(temp.getType() == 5){
-                panelMap.put(i, new CombatPanel());
-            }
-            else {
-                panelMap.put(i,new EndPanel(false));
+                panelMap.put(key, new CombatPanel());
             }
         }
-        currentPanel = (GamePanel) panelMap.get(0);
+        currentPanel = (GamePanel) panelMap.get(currentRoom.hashCode());
         movePanel = new MovePanel(currentRoom);
         combat = new LinkedList<>();
         enemies = new ArrayList<>();
@@ -268,30 +266,25 @@ public class GameLogic implements ActionListener, ItemListener {
         //If signal comes from move panel move into corresponding room if it isn't locked.
         if(movePanel.contains(e.getSource()) && moving){
             int moveSignal = movePanel.moveSignal(e);
-            if(moveSignal > 0){
-                boolean locked = false;
-                if(map.getRoom(moveSignal).isLocked()){
-                    locked = true;
-                    for(Player p : players){
-                        if(p != null && map.getRoom(moveSignal).unlock(p)){
-                            locked = false;
-                            break;
-                        }
+            boolean locked = false;
+            if(map.getRoom(moveSignal).isLocked()){
+                locked = true;
+                for(Player p : players){
+                    if(p != null && map.getRoom(moveSignal).unlock(p)){
+                        locked = false;
+                        break;
                     }
                 }
-                if(!locked){
-                    moveRooms(moveSignal);
-                }
-                else {
-                    currentPanel.setText("You try the door but it seems like it is locked.\n Maybe you can find something to open this...");
-                    moving = false;
-                    move.remove(movePanel);
-                    move.revalidate();
-                    move.setVisible(false);
-                }
             }
-            else{
-                return;
+            if(!locked){
+                moveRooms(moveSignal);
+            }
+            else {
+                currentPanel.setText("You try the door but it seems like it is locked.\n Maybe you can find something to open this...");
+                moving = false;
+                move.remove(movePanel);
+                move.revalidate();
+                move.setVisible(false);
             }
         }
         int signal;
@@ -310,7 +303,7 @@ public class GameLogic implements ActionListener, ItemListener {
                 GameStartPanel temp = (GameStartPanel) currentPanel;
                 players = temp.getPlayers();
                 currentRoom.setCleared(true);
-                moveRooms(1);
+                moveRooms(currentRoom.getForward());
             }
         }
         else if(currentPanel.getClass().isInstance(new CombatPanel())){
@@ -370,9 +363,33 @@ public class GameLogic implements ActionListener, ItemListener {
                         for(Enemy en : enemies){
                             en.updateHealth(abl);
                         }
-                        temp.setText(currentPlayer.getName() + " deals " + abl + " damage to all enemies");
+                        temp.setText(currentPlayer.getName() + " tosses a massive fireball at the enemies dealing " + abl + " damage to all enemies");
                     }
-                    else if(abl < 0){
+                    else if(abl == 0){
+                        int i = 0;
+                        Enemy target = enemies.get(i);
+                        int attackResolved = -1;
+                        while(attackResolved < 0){
+                            if(target.checkStatus()){
+                                int damage = currentPlayer.attack(target.getAc()) + currentPlayer.attack(target.getAc());
+                                target.updateHealth(damage);
+                                temp.setText(target.getName() + " took " + damage + "\n Next players turn.(Press Take turn Button)");
+                                attackResolved = 1;
+                            }
+                            else{
+                                i++;
+                                if(i == enemies.size()){
+                                    attackResolved = 1;
+                                    temp.endCombat();
+                                    endCombat();
+                                }
+                                else{
+                                    target = enemies.get(i);
+                                }
+                            }
+                        }
+                    }
+                    else {
                         for(Player p : players){
                             p.updateHealth(abl);
                         }
@@ -397,7 +414,7 @@ public class GameLogic implements ActionListener, ItemListener {
                 signal--;
                 int heal = -1 * Dice.rollD12(1, 0);
                 players[signal].updateHealth(heal);
-                currentPanel.setText(players[signal].getName() + " heals for " + heal + " health.");
+                currentPanel.setText(players[signal].getName() + " heals for " + -heal + " health.");
             }
         }
         else if(currentPanel.getClass().isInstance(new DefaultPanel())){
@@ -452,12 +469,6 @@ public class GameLogic implements ActionListener, ItemListener {
                     players[3].useItem("Health pot");
                     currentPanel.setText(players[3].getName() + "drinks a health pot");
                 }
-            }
-        }
-        else if(currentPanel.getClass().isInstance(new EndPanel())){
-            gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
-            if(signal == 1){
-                new GameLogic();
             }
         }
     }

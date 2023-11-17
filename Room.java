@@ -33,6 +33,10 @@ public class Room {
         cleared = false;
         setType();
     }
+
+    public Room(String name, int rType){
+        this(name, null, null, null, null, rType);
+    }
     //getter methods
     public String getRoomName() {
         return roomName;
@@ -49,6 +53,23 @@ public class Room {
     public Integer getRight(){
         return right;
     }
+
+    public void setBack(Integer back) {
+        this.back = back;
+    }
+
+    public void setForward(Integer forward) {
+        this.forward = forward;
+    }
+
+    public void setLeft(Integer left) {
+        this.left = left;
+    }
+
+    public void setRight(Integer right) {
+        this.right = right;
+    }
+
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
@@ -71,6 +92,14 @@ public class Room {
 
     public void setCleared(boolean cleared) {
         this.cleared = cleared;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public String getClearedText() {
+        return clearedText;
     }
 
     //setter type methods
@@ -155,12 +184,24 @@ public class Room {
     }
     @Override
     public boolean equals(Object o) {
+        if(o == null) return false;
         if(super.equals(o) && getClass() == o.getClass()) {
-            if(roomName.equals(((Room) o).getRoomName()) && back.equals(((Room) o).getBack()) && forward.equals(((Room) o).getForward())
-                    && left.equals(((Room) o).getLeft()) && right.equals(((Room) o).getRight())) {
-                return true;
-            }
+            Room temp = (Room) o;
+            return roomName.equals(temp.getRoomName()) && type == temp.getType() && cleared == temp.cleared && locked == temp.locked && intro.equals(temp.getIntro()) && clearedText.equals(temp.clearedText);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 7;
+        result = result + roomName.hashCode() + intro.hashCode() + clearedText.hashCode() + type;
+        if(cleared){
+            result = result + 1;
+        }
+        if(locked){
+            result = result + 1;
+        }
+        return 37 * result;
     }
 }

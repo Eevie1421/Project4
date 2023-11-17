@@ -27,10 +27,12 @@ public class GameStartPanel extends JPanel  implements GamePanel{
     public GameStartPanel(){
         classText = new Hashtable<>();
         String classBffr;
-        classBffr = "Fighter Class\n" + "Max Health: 30\n" + "Armor Class: 15\n" + "Attack Bonus: +3\n" + "Initiative Bonus: 0\n" + "Ability: sword spin";
+        classBffr = "Fighter Class\n" + "Max Health: 30\n" + "Armor Class: 15\n" + "Attack Bonus: +3\n" + "Initiative Bonus: 0\n" + "Ability: double strike";
         classText.put("Fighter", classBffr);
-        classBffr  = "Cleric Class\n" + "Max Health: 25\n" + "Armor Class: 16\n" + "Attack Bonus: +2\n" + "Initiative Bonus: 3\n" + "Ability: cure wounds";
+        classBffr  = "Cleric Class\n" + "Max Health: 25\n" + "Armor Class: 16\n" + "Attack Bonus: +2\n" + "Initiative Bonus: 3\n" + "Ability: healing chant";
         classText.put("Cleric", classBffr);
+        classBffr = "Sorcerer Class\n" + "Max Health: 20\n" + "Armor Class: 12\n" + "Attack Bonus: +3\n" + "Initiative Bonus: 1\n" + "Ability: fireball";
+        classText.put("Sorcerer", classBffr);
         player1 = new CharSelect(1);
         player2 = new CharSelect(2);
         player3 = new CharSelect(3);
@@ -78,32 +80,44 @@ public class GameStartPanel extends JPanel  implements GamePanel{
             if(player1.playerClass.equals("Fighter")){
                 players[0] = new Player(player1.getPlayerName(), 1);
             }
-            else {
+            else if(player1.playerClass.equals("Cleric")){
                 players[0] = new Player(player1.getPlayerName(), 2);
+            }
+            else if(player1.playerClass.equals("Sorcerer")){
+                players[0] = new Player(player1.getPlayerName(), 3);
             }
         }
         if(player2.lockedIn){
             if(player2.playerClass.equals("Fighter")){
                 players[1] = new Player(player2.getPlayerName(), 1);
             }
-            else{
+            else if(player2.playerClass.equals("Cleric")){
                 players[1] = new Player(player2.getPlayerName(), 2);
+            }
+            else if(player2.playerClass.equals("Sorcerer")){
+                players[1] = new Player(player2.getPlayerName(), 3);
             }
         }
         if(player3.lockedIn){
             if(player3.playerClass.equals("Fighter")){
                 players[2] = new Player(player3.getPlayerName(), 1);
             }
-            else{
+            else if(player3.playerClass.equals("Cleric")){
                 players[2] = new Player(player3.getPlayerName(), 2);
+            }
+            else if(player3.playerClass.equals("Sorcerer")){
+                players[2] = new Player(player3.getPlayerName(), 3);
             }
         }
         if(player4.lockedIn){
             if(player4.playerClass.equals("Fighter")){
                 players[3] = new Player(player4.getPlayerName(), 1);
             }
-            else{
+            else if(player4.playerClass.equals("Cleric")){
                 players[3] = new Player(player4.getPlayerName(), 2);
+            }
+            else if(player4.playerClass.equals("Sorcerer")){
+                players[3] = new Player(player4.getPlayerName(), 3);
             }
         }
         return players;
@@ -335,10 +349,11 @@ public class GameStartPanel extends JPanel  implements GamePanel{
             name = new JTextField("Enter Name");
             name.setPreferredSize(new Dimension(395, 100));
             lockedIn = false;
-            String[] classes = new String[2];
+            String[] classes = new String[3];
             classes[0] = "Fighter";
             playerClass = "Fighter";
             classes[1] = "Cleric";
+            classes [2] = "Sorcerer";
             dropDown = new JComboBox<>(classes);
             dropDown.setPreferredSize(new Dimension(395, 100));
             classStats = new JTextArea(classText.get("Fighter"));

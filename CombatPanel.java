@@ -1,3 +1,6 @@
+/* Combat Panel
+ * - Panel for combat
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +20,6 @@ public class CombatPanel extends JPanel  implements GamePanel{
     private ArrayList<Enemy> enemies;
     private ArrayList<JTextArea> enemyStatus;
     private JButton moveButton;
-    private boolean complete;
 
 
     public CombatPanel(Player[] players){
@@ -81,6 +83,12 @@ public class CombatPanel extends JPanel  implements GamePanel{
         this(new Player[]{new Player("Joe", 1), new Player("Jim",1), new Player("Jill", 0), new Player("Greg", 0)});
     }
 
+    /**
+     * activatePanel - Adds action listeners to all buttons, removes any dead players, sets each player text box.
+     * @param a - action listener
+     * @param e - not used
+     * @param players - array of current player objects.
+     */
     @Override
     public void activatePanel(ActionListener a, ItemListener e, Player[] players) {
         player1.attack.addActionListener(a);
@@ -137,6 +145,18 @@ public class CombatPanel extends JPanel  implements GamePanel{
         moveButton.addActionListener(a);
     }
 
+    /**
+     * returns the type of signal corresponding to the button it came from.
+     * @param e - ActionEvent triggered by button press.
+     * @return int actionType
+     * -(1-4) roll initiative, changes player panel to combat version and locks player in.
+     * 1 attack
+     * 2 ability
+     * 3 item
+     * 0 move
+     * -5 next turn
+     * -6 error
+     */
     @Override
     public int actionSignal(ActionEvent e){
         int actionType = -6;
@@ -174,11 +194,19 @@ public class CombatPanel extends JPanel  implements GamePanel{
         return actionType;
     }
 
+    /**
+     * setText: sets the text box to the given text
+     * @param s - line of text
+     */
     @Override
     public void setText(String s) {
         textarea.setText(s);
     }
 
+    /**
+     * Removes the start button from the GUI and initializes the combat area
+     * @param enemies1 - the enemies in the room
+     */
     public void beginCombat(ArrayList<Enemy> enemies1){
         enemies.addAll(enemies1);
         combatUi.remove(startCombat);
@@ -191,7 +219,7 @@ public class CombatPanel extends JPanel  implements GamePanel{
         for(int i = 0; i < enemies.size(); i++){
             c.gridy = i;
             Enemy temp = enemies.get(i);
-            enemyStatus.add(new JTextArea(temp.getName() + i +" HP: " + temp.getHealth()));
+            enemyStatus.add(new JTextArea(temp.getName() +" HP: " + temp.getHealth()));
             enemyStatus.get(i).setPreferredSize(new Dimension(400, 100));
             combatUi.add(enemyStatus.get(i), c);
         }
@@ -200,6 +228,11 @@ public class CombatPanel extends JPanel  implements GamePanel{
         combatUi.revalidate();
     }
 
+    /**
+     * Updates the enemies status
+     * @param e - the enemies in the room
+     * @return boolean : returns true if room is cleared.
+     */
     public boolean updateEnemies(ArrayList<Enemy> e){
         boolean cleared = true;
         enemies = e;
@@ -215,6 +248,11 @@ public class CombatPanel extends JPanel  implements GamePanel{
         }
         return cleared;
     }
+
+    /**
+     * Updates the players health
+     * @param p - the array of players playing
+     */
     public void updatePlayers(Player[] p){
         if(p[0] != null){
             player1.playerName.setText(p[0].getName() + "| HP: " + p[0].checkHealth());
@@ -229,6 +267,10 @@ public class CombatPanel extends JPanel  implements GamePanel{
             player4.playerName.setText(p[3].getName() + "| HP: " + p[3].checkHealth());
         }
     }
+
+    /**
+     * removes the enemyStatus areas from the GUI and adds the move button
+     */
     public void endCombat(){
         for(JTextArea t : enemyStatus){
             combatUi.remove(t);
@@ -238,6 +280,10 @@ public class CombatPanel extends JPanel  implements GamePanel{
         revalidate();
     }
 
+    /**
+     * checks if combat is ready to start
+     * @return boolean - true if ready to start otherwhise false
+     */
     public boolean isCombatReady(){
         return player1.inCombat && player2.inCombat && player3.inCombat && player4.inCombat;
     }
@@ -266,6 +312,10 @@ public class CombatPanel extends JPanel  implements GamePanel{
             add(rollInitiative);
             inCombat = false;
         }
+
+        /**
+         * Changes the player panels to the combat version
+         */
         private void enterCombat(){
             remove(rollInitiative);
             inCombat = true;

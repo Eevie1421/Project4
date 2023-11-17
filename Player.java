@@ -7,7 +7,7 @@ public class Player implements Creature{
     private int maxHealth;
     private int health;
     private Hashtable<String, Item> backpack;
-    // 1 == fighter, 2 == cleric;
+    // 1 = fighter, 2 = cleric, 3 = sorcerer;
     private int playerClass;
     private String name;
     private int playerAc;
@@ -65,12 +65,19 @@ public class Player implements Creature{
             attackMod = 3;
             initiativeMod = 0;
         }
-        else{
+        else if (playerClass == 2){
             maxHealth = 25;
             health = 25;
             playerAc = 16;
             attackMod = 2;
             initiativeMod = 3;
+        }
+        else if (playerClass ==3){
+            maxHealth = 20;
+            health = 20;
+            playerAc = 12;
+            attackMod = 3;
+            initiativeMod = 1;
         }
     }
 
@@ -119,14 +126,20 @@ public class Player implements Creature{
         else if(playerClass == 2 && attackRoll >= ac){
             damageRoll = mace();
         }
+        else if(playerClass == 3 && attackRoll >= ac){
+            damageRoll = firebolt();
+        }
         return damageRoll;
     }
     private int sword(){
-        return Dice.rollD10(1, attackMod);
+        return Dice.rollD8(1, attackMod);
     }
 
     private int mace(){
         return Dice.rollD6(1, attackMod);
+    }
+    private int firebolt(){
+        return Dice.rollD10(1, attackMod);
     }
 
     public void setAbilityUsed(boolean abilityUsed) {
@@ -141,11 +154,13 @@ public class Player implements Creature{
         int hp = 0;
         if(playerClass == 1 && !abilityUsed){
             abilityUsed = true;
-            hp = Dice.rollD8(1, attackMod);
         }
         else if(playerClass == 2 && !abilityUsed) {
             abilityUsed = true;
             hp = -1 * Dice.rollD8(2, 0);
+        }
+        else if(playerClass == 3 && !abilityUsed){
+            hp = Dice.rollD6(4, 0);
         }
         return hp;
     }
