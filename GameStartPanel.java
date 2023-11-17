@@ -1,5 +1,6 @@
-/* GameStartPanel
- * -Handles character selection screen
+/**
+ * GameStartPanel Handles the gui for character selection
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,11 @@ public class GameStartPanel extends JPanel  implements GamePanel{
     private JButton startButton;
     private Hashtable<String, String> classText;
 
+    /**
+     * initializes the player selection areas as well as creates
+     * a hashtable with the text for each class to update the
+     * text area.
+     */
     public GameStartPanel(){
         classText = new Hashtable<>();
         String classBffr;
@@ -74,6 +80,11 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         add(panel5, c);
     }
 
+    /**
+     * returns a player array of all the players with the class
+     * selected by the dropDown box and the name entered in the text area
+     * @return Player[] - array of players to initialize game with only the locked in players.
+     */
     public Player[] getPlayers(){
         Player[] players = new Player[4];
         if(player1.lockedIn){
@@ -122,6 +133,11 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         }
         return players;
     }
+
+    /**
+     * checks  if all the players in the charselect are locked
+     * @return boolean - true if players are locked false if not
+     */
     public boolean playersLocked(){
         boolean i = true;
         if(player1.playing && !player1.lockedIn){
@@ -139,6 +155,12 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         return i;
     }
 
+    /**
+     * returns 1 to GameLogic if players are ready to start.
+     * if an Add button was clicked initializes the corresponding player for charSelect
+     * @param e - the ActionEvent that occured on this object
+     * @return 1 if ready to start otherwhise -1
+     */
     @Override
     public int actionSignal(ActionEvent e) {
         int sig = -1;
@@ -165,11 +187,16 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         return sig;
     }
 
+    //does nothing
     @Override
     public void setText(String s) {
 
     }
 
+    /**
+     * sets player class to the selected option and sets player to locked in
+     * @param player - the player which is being locked in
+     */
     private void lockIn(int player){
         if(player == 1){
             player1.playerClass = (String) player1.dropDown.getSelectedItem();
@@ -189,6 +216,10 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         }
     }
 
+    /**
+     * Initializes a charselect area in the JPanel on which Action occured
+     * @param e the ActionEvent that triggered method call
+     */
     private void addPlayer(ActionEvent e){
         if(e.getSource().equals(player1.start)){
             player1.playing = true;
@@ -289,6 +320,10 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         }
     }
 
+    /**
+     * updates the class text area whenever the dropdown is changed
+     * @param e - the ItemEvent triggered by changing drop down box
+     */
     public void updateClassPanel(ItemEvent e){
         String text =(String) e.getItem();
         if(e.getSource().equals(player1.dropDown)){
@@ -312,6 +347,13 @@ public class GameStartPanel extends JPanel  implements GamePanel{
             player4.classStats.setText(text);
         }
     }
+
+    /**
+     * initializes the ActionListeners and ItemListeners of all components
+     * @param a - the ActionListener calling method
+     * @param i - the ItemListener calling method
+     * @param players - not used
+     */
     @Override
     public void activatePanel(ActionListener a, ItemListener i, Player[] players) {
         player1.start.addActionListener(a);
@@ -329,6 +371,9 @@ public class GameStartPanel extends JPanel  implements GamePanel{
         startButton.addActionListener(a);
     }
 
+    /**
+     * Inner class which holds the Swing components for each charselect area
+     */
     private class CharSelect extends JComponent{
         private int playerNum;
         private boolean lockedIn;
