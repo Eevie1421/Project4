@@ -13,10 +13,13 @@ public class Room {
     private ArrayList<Enemy> enemies;
     private int type;
     private Item item;
+    private boolean cleared;
     private boolean locked;
+    private String intro;
+    private String clearedText;
     //Methods
     /**
-     * Constructor, sets room name, pointers to other rooms, initializes Enemy list, and sets room type then
+     * Main Constructor, sets room name, pointers to other rooms, initializes Enemy list, and sets room type then
      * calls setType() to finish construction.
      * @param name String set to roomName
      * @param prev Integer set to back pointer
@@ -33,7 +36,16 @@ public class Room {
         right = sideR;
         enemies = new ArrayList<>();
         type = rType;
+        cleared = false;
         setType();
+    }
+    /**
+     * Secondary Constructor. Passes name, tType, and null values for room pointers to the main Constructor.
+     * @param name String set to roomName
+     * @param rType int set to type
+     */
+    public Room(String name, int rType){
+        this(name, null, null, null, null, rType);
     }
     //getter methods
     /**
@@ -109,42 +121,117 @@ public class Room {
     public boolean isLocked() {
         return locked;
     }
+    /**
+     * Basic getter.
+     * @return attribute boolean cleared
+     */
+    public boolean isCleared() {
+        return cleared;
+    }
+    /**
+     * Basic getter.
+     * @return attribute boolean intro
+     */
+    public String getIntro() {
+        return intro;
+    }
+    /**
+     * Basic getter.
+     * @return attribute String clearedText
+     */
+    public String getClearedText() {
+        return clearedText;
+    }
+    /**
+     * Returns clearedText if attribute cleared is true, or intro if it is false.
+     * @return clearedText if cleared is true, else intro
+     */
+    public String getText(){
+        if(isCleared()){
+            return clearedText;
+        }
+        else {
+            return intro;
+        }
+    }
     //setter type methods
     /**
-     * Continuation of constructor. Sets item, locked, and adds enemies depending on the value of type.
+     * Continuation of constructor. Sets item, locked, intro and clearedText, and adds enemies depending on the value of type.
      * Room types: 0=start, 1=combat, 2=objective, 3=item, 4=heal, 5=boss, 6=end
      */
     private void setType() {
-        if(type == 1) {//1=combat
+        if(type == 1) {
             item = null;
             locked = false;
             enemies.add(new Zombie());
             enemies.add(new Zombie());
             enemies.add(new Zombie());
+            intro = "Upon entering the room you see three zombies in front of you. roll initiative";
+            clearedText = "The bodies of the zombies still lay upon the ground. You silently pray it stays that way";
         }
-        else if(type == 2) {//2=objective
+        else if(type == 2) {
             item = null;
             locked = true;
+            intro = "You feel a cool breeze sweep through chilling you to your bones";
+            clearedText = "You feel a cool breeze sweep through chilling you to your bones";
         }
-        else if(type == 3) {//3=item
+        else if(type == 3) {
             item = new Item(0);
             locked = false;
+            intro = "You see something glinting off the torchlight in the middle of room.\n It looks like you can pick it up.";
+            clearedText = "You see nothing but rocks and dirt";
             //something for item pickups
         }
-        else if(type == 4) {//4=sanctuary
+        else if(type == 4) {
             item = null;
             locked = false;
+            intro = "You enter into a room with a campfire in the center.\n" + "You feel compelled to take a moment to rest and heal by the fire.\n";
+            clearedText = "The warmth has faded from the fire you feel it will not be safe to linger";
             //something for healing
         }
-        else if(type == 5) {//5=boss
+        else if(type == 5) {
             item = null;
-            locked = false;
+            locked = true;
             enemies.add(new Boss());
+            intro = "As you enter a large open room you hear load snoring echoing out from deeper within. " +
+                    "As you get closer you can see a massive three headed dog sleeping with its head on its paws." +
+                    "Suddenly as you approach it wakes up and lets out a massive roar. roll initiative";
+            clearedText = "As the dust settles the large creature can be seen slain in the middle of the room";
         }
-        else {//0=start, //6=end
+        else {
             item = null;
             locked = false;
+            intro = "";
+            clearedText = "";
         }
+    }
+    /**
+     * Sets the back pointer to a new Integer value.
+     * @param b Integer set to back pointer
+     */
+    public void setBack(Integer b) {
+        this.back = b;
+    }
+    /**
+     * Sets the forward pointer to a new Integer value.
+     * @param f Integer set to forward pointer
+     */
+    public void setForward(Integer f){
+        this.forward = f;
+    }
+    /**
+     * Sets the left pointer to a new Integer value.
+     * @param l Integer set to left pointer
+     */
+    public void setLeft(Integer l) {
+        this.left = l;
+    }
+    /**
+     * Sets the right pointer to a new Integer value.
+     * @param r Integer set to right pointer
+     */
+    public void setRight(Integer r) {
+        this.right = r;
     }
     /**
      * Sets item to Item i.
@@ -152,6 +239,13 @@ public class Room {
      */
     public void setItem(Item i) {
         item = i;
+    }
+    /**
+     * Sets the cleared attribute to a new boolean value
+     * @param c boolean set to cleared
+     */
+    public void setCleared(boolean c) {
+        this.cleared = c;
     }
     /**
      * Adds an Enemy to enemies list.
@@ -187,5 +281,21 @@ public class Room {
             }
         }
         return false;
+    }
+    /**
+     * Returns a HashCode value based on the HashCode of its attributes
+     * @return int HashCode identifier
+     */
+    @Override
+    public int hashCode() {
+        int result = 7;
+        result = result + roomName.hashCode() + intro.hashCode() + clearedText.hashCode() + type;
+        if(cleared){
+            result = result + 1;
+        }
+        if(locked){
+            result = result + 1;
+        }
+        return 37 * result;
     }
 }
