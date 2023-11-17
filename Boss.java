@@ -19,7 +19,7 @@ public class Boss extends Enemy{
      */
     @Override
     public int attackPlayer(int players) {
-        int player = (int)(Math.random() * players);
+        int player = (int)(Math.random() * (players + 1));
         if(player == players){
             specialAttk = true;
             player = -1;
@@ -45,10 +45,10 @@ public class Boss extends Enemy{
         int attackRoll = Dice.rollD20(1, getAttackMod());
         int damageRoll = 0;
         if(!specialAttk && attackRoll > ac){
-            damageRoll = Dice.rollD8(2, 0);
+            damageRoll = Dice.rollD10(2, getAttackMod());
         }
         else if(specialAttk){
-            damageRoll = Dice.rollD6(3,0);
+            damageRoll = Dice.rollD8(3,0);
             specialAttk = false;
         }
         return damageRoll;

@@ -234,8 +234,10 @@ public class GameLogic implements ActionListener, ItemListener {
     }
 
     private void endGame(boolean gameWon){
+        gui.remove((JPanel) currentPanel);
         currentPanel = new EndPanel(gameWon);
         currentPanel.activatePanel(this, this, players);
+        gui.add((JPanel)currentPanel);
     }
     private boolean checkPlayers(){
         return (players[0] != null && players[0].isALive()) || (players[1] != null && players[1].isALive()) || (players[2] != null && players[3].isALive()) || (players[3] != null && players[3].isALive());
@@ -332,6 +334,9 @@ public class GameLogic implements ActionListener, ItemListener {
             }
             if(signal > 0){
                 //add specific targets as a later functionality
+                if(combat.peek() != null && !combat.peek().getClass().isInstance(new Player())){
+                    return;
+                }
                 Player currentPlayer = (Player) combat.poll();
                 if(signal == 1){
                     int i = 0;
@@ -470,6 +475,12 @@ public class GameLogic implements ActionListener, ItemListener {
                     currentPanel.setText(players[3].getName() + "drinks a health pot");
                 }
             }
+        }
+        else if(currentPanel.getClass().isInstance(new EndPanel())){
+            if(signal == 1){
+                new GameLogic();
+            }
+            gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         }
     }
 

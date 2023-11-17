@@ -72,13 +72,13 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
         if(players[0] != null && players[0].isALive()){
             p1Heal.addActionListener(a);
         }
-        else if(players[1] != null && players[1].isALive()){
+        if(players[1] != null && players[1].isALive()){
             p2Heal.addActionListener(a);
         }
-        else if(players[2] != null && players[2].isALive()){
+        if(players[2] != null && players[2].isALive()){
             p3Heal.addActionListener(a);
         }
-        else if(players[3] != null && players[3].isALive()){
+        if(players[3] != null && players[3].isALive()){
             p4Heal.addActionListener(a);
         }
         moveRooms.addActionListener(a);

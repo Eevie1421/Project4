@@ -20,7 +20,6 @@ public class EndPanel extends JPanel implements GamePanel{
         } else {
             message = new JTextArea("Game over! Try again");
         }
-        message = new JTextArea("Success!");
         message.setPreferredSize(new Dimension(800, 400));
         newGame = new JButton("New Game");
         quit = new JButton("Quit");
