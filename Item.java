@@ -1,3 +1,8 @@
+/**
+ * Item objects that can be collected by player. Each item has its own unique functionality
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
+ */
+
 import java.util.Objects;
 
 public class Item {
@@ -18,6 +23,10 @@ public class Item {
             type = "Health pot";
             uses = 2;
         }
+    }
+
+    public Item(){
+        this(0);
     }
 
     /**
@@ -50,7 +59,7 @@ public class Item {
      */
     public int drinkPot(){
         uses --;
-        return Dice.rollD6(2,2);
+        return -1 * Dice.rollD6(2,2);
     }
 
     /**
@@ -58,29 +67,45 @@ public class Item {
      * @return - true if an item is out of charges false if it still has some.
      */
     public boolean outOfCharges(){
-        if(uses <= 0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return uses <= 0;
     }
 
     public String getType() {
         return type;
     }
 
-    //need implementation
+    /**
+     * prints item to string
+     * @return String containing items data
+     */
     @Override
     public String toString() {
-        return super.toString();
+        return "Item{" +
+                "uses=" + uses +
+                ", type='" + type + '\'' +
+                ", typeNum=" + typeNum +
+                '}';
     }
 
+    /**
+     * checks if an item is equal to another item
+     * @param obj - the object to compare
+     * @return boolean - true if objects are equal, false if they are not
+     */
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if(obj == null) return false;
+        if(obj.getClass().isInstance(new Item())){
+            Item temp = (Item) obj;
+            return uses == temp.uses && typeNum == temp.typeNum && type.equals(temp.type);
+        }
+        return false;
     }
 
+    /**
+     * returns unique hashcode for item
+     * @return int - hashcode for item
+     */
     @Override
     public int hashCode() {
         return Objects.hash(uses, type, typeNum);

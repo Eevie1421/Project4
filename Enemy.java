@@ -1,9 +1,8 @@
-/* Enemy - Enemy is the parent class for all enemy types.
- * Methods which must be implemented in children are
- * -attackPlayers
- * -attack1
+/**
+ * Enemy is the parent class for any ai monsters in dungeon
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
-public abstract class Enemy {
+public abstract class Enemy implements Creature{
     private int health;
     private int maxHealth;
     //status is true for alive false for dead
@@ -13,6 +12,12 @@ public abstract class Enemy {
     //attackMod: modification added to attack rolls
     private int attackMod;
 
+    /**
+     * Sets the health, attack mod, and armor class of the creature
+     * @param maxHealth - maxHealth of creature
+     * @param ac - armor class of creature
+     * @param attackMod - attack modifier for creature
+     */
     public Enemy(int maxHealth, int ac, int attackMod){
         this.maxHealth = maxHealth;
         this.health = maxHealth;
@@ -24,7 +29,9 @@ public abstract class Enemy {
         this(10, 10, 0);
     }
 
-    public int getEnemyAc() {
+    //getter methods
+    @Override
+    public int getAc() {
         return enemyAc;
     }
 
@@ -32,6 +39,7 @@ public abstract class Enemy {
         return attackMod;
     }
 
+    //setter methods
     public void setHealth(int health) {
         this.health = health;
     }
@@ -62,15 +70,15 @@ public abstract class Enemy {
      * isAlive - checks if the creature is alive
      * @return - returns the current status of the creature
      */
-    public boolean isAlive(){
+    public boolean checkStatus(){
         return status;
     }
 
     /**
-     * checkHealth - checks health of the creature
+     * getHealth - checks health of the creature
      * @return - health
      */
-    public int checkHealth(){
+    public int getHealth(){
         return health;
     }
 
@@ -79,10 +87,4 @@ public abstract class Enemy {
      */
     public abstract int attackPlayer(int players);
 
-    /**
-     * attack - simulates an attack.
-     * @param ac - the armor class of the player being attacked.
-     * @return - the damage dealt by the attack. if the attack misses it returns 0.
-     */
-    public abstract int attack(int ac);
 }
