@@ -1,3 +1,8 @@
+/**
+ * MovePanel implements the GUI needed for moving between rooms
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +15,15 @@ public class MovePanel extends JPanel {
     private JButton left;
     private JButton right;
     private Hashtable<String, Integer> roomPointers;
+
+    /**
+     * Constructor takes in the room the players are currently in
+     * and initializes the buttons corresponding to the doors of the room given.
+     * if a pointer is null the button is set to NO DOOR HERE and is given no actioncommand
+     * otherwhise the button is activated and the pointer for the corresponding door is added to
+     * the roomPointers hashtable.
+     * @param r - the room the players are currently in
+     */
     public MovePanel(Room r){
         setPreferredSize(new Dimension(900, 900));
         setLayout(new GridBagLayout());
@@ -61,6 +75,10 @@ public class MovePanel extends JPanel {
         }
     }
 
+    /**
+     * activates the buttons
+     * @param a - the ActionListener implementing MovePanel
+     */
     public void activatePanel(ActionListener a){
         forward.addActionListener(a);
         back.addActionListener(a);
@@ -68,6 +86,11 @@ public class MovePanel extends JPanel {
         right.addActionListener(a);
     }
 
+    /**
+     * returns the pointer of the room corresponding to the button that was clicked
+     * @param e - the ActionEvent performed on this panel
+     * @return - returns the HashCode for the room trying to be moved into or -1 for a button without a door
+     */
     public Integer moveSignal(ActionEvent e){
         Integer roomVal = -1;
         if(roomPointers.containsKey(e.getActionCommand())){
@@ -76,6 +99,11 @@ public class MovePanel extends JPanel {
         return roomVal;
     }
 
+    /**
+     * checks if this object contains the given object
+     * @param obj - the object to compare
+     * @return true if it is equal to any of the parts of MovePanel
+     */
     public boolean contains(Object obj){
         if(obj == null) return false;
         if(obj.getClass().isInstance(new JButton())){

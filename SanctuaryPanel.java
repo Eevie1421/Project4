@@ -1,3 +1,8 @@
+/**
+ * Sanctuary panel implements the gui for a heal area.
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,6 +21,9 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
     private boolean heal4used;
     private JTextArea textArea;
 
+    /**
+     * initializes the gui and sets the heals to unused
+     */
     public SanctuaryPanel(){
         setPreferredSize(new Dimension(1600, 1200));
         setLayout(new GridBagLayout());
@@ -67,6 +75,12 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
         add(textArea, c);
     }
 
+    /**
+     * activates the heal buttons if the player is alive and not null
+     * @param a the action listener using this class
+     * @param e - unused
+     * @param players - the players being used in gamelogic
+     */
     @Override
     public void activatePanel(ActionListener a, ItemListener e, Player[] players) {
         if(players[0] != null && players[0].isALive()){
@@ -84,6 +98,11 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
         moveRooms.addActionListener(a);
     }
 
+    /**
+     * returns the number corresponding to the player healing if the heal has not been used
+     * @param e - the ActionEvent coming from GameLogic
+     * @return int - signal corresponding to player clicked
+     */
     @Override
     public int actionSignal(ActionEvent e){
         int actionType = -1;
@@ -109,6 +128,10 @@ public class SanctuaryPanel extends JPanel  implements GamePanel{
         return actionType;
     }
 
+    /**
+     * sets the text of the panel
+     * @param s - string to set text to.
+     */
     @Override
     public void setText(String s){
         textArea.setText(s);

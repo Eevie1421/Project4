@@ -3,15 +3,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-
 import static java.awt.GridBagConstraints.BOTH;
 
-
+/**
+ * Basic panel for any room that doesn't have special functions.
+ * has functionality for moving rooms, as well as interacting with the room, and item usage.
+ * @author  @author Jonathan Murphy, Evelyn Totman, Salim Jday
+ */
 public class DefaultPanel extends JPanel implements GamePanel {
     private playerPane[] players;
     private JTextArea txt;
     private JButton moveRooms;
 
+    /**
+     * Constructor
+     * Sets the player areas, moveRooms button, and text area.
+     * @param playerNum - number of players
+     */
     public DefaultPanel(int playerNum){
         setPreferredSize(new Dimension(1600, 1200));
         setLayout(new GridBagLayout());
@@ -53,10 +61,21 @@ public class DefaultPanel extends JPanel implements GamePanel {
         this(4);
     }
 
+    /**
+     * setText - updates the text area with the given string
+     * @param s - the text to update it to
+     */
     @Override
     public void setText(String s){
         txt.setText(s);
     }
+
+    /**
+     * activatePanel - activates the buttons and remove any dead players
+     * @param a - action listener
+     * @param e - not used
+     * @param names - array of players.
+     */
     @Override
     public void activatePanel(ActionListener a, ItemListener e, Player[] names) {
         moveRooms.addActionListener(a);
@@ -74,6 +93,11 @@ public class DefaultPanel extends JPanel implements GamePanel {
         revalidate();
     }
 
+    /**
+     * actionSignal - gets an ActionEvent from GameLogic and returns a signal to tell it what to do
+     * @param e - the ActionEvent that triggered function call
+     * @return int - 0: move signal, 1-4: player panel signal - number corresponds to which player
+     */
     @Override
     public int actionSignal(ActionEvent e) {
         int signal = -1;
@@ -93,6 +117,11 @@ public class DefaultPanel extends JPanel implements GamePanel {
         private JButton interact;
         private JTextArea status;
 
+        /**
+         * Constructor for individual player panels
+         * @param name - name of player
+         * @param health - health of player
+         */
         private playerPane(String name, int health){
             setPreferredSize(new Dimension(1200, 200));
             setLayout(new GridBagLayout());
@@ -119,13 +148,21 @@ public class DefaultPanel extends JPanel implements GamePanel {
             add(items, c);
         }
 
+        /**
+         * setButtons - activates actionListeners in pane
+         * @param a - ActionListener to use
+         */
         private void setButtons(ActionListener a){
             items.addActionListener(a);
             interact.addActionListener(a);
             revalidate();
         }
 
-
+        /**
+         * checks if object is in pane
+         * @param j - object to be compared
+         * @return boolean - true if item is in pane
+         */
         public boolean contains(Object j) {
             return j.equals(items) || j.equals(interact);
         }

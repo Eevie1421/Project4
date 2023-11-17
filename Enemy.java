@@ -1,7 +1,6 @@
-/* Enemy - Enemy is the parent class for all enemy types.
- * Methods which must be implemented in children are
- * -attackPlayers
- * -attack1
+/**
+ * Enemy is the parent class for any ai monsters in dungeon
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
 public abstract class Enemy implements Creature{
     private int health;
@@ -13,6 +12,12 @@ public abstract class Enemy implements Creature{
     //attackMod: modification added to attack rolls
     private int attackMod;
 
+    /**
+     * Sets the health, attack mod, and armor class of the creature
+     * @param maxHealth - maxHealth of creature
+     * @param ac - armor class of creature
+     * @param attackMod - attack modifier for creature
+     */
     public Enemy(int maxHealth, int ac, int attackMod){
         this.maxHealth = maxHealth;
         this.health = maxHealth;
@@ -24,6 +29,8 @@ public abstract class Enemy implements Creature{
         this(10, 10, 0);
     }
 
+    //getter methods
+    @Override
     public int getAc() {
         return enemyAc;
     }
@@ -32,6 +39,7 @@ public abstract class Enemy implements Creature{
         return attackMod;
     }
 
+    //setter methods
     public void setHealth(int health) {
         this.health = health;
     }

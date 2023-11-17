@@ -1,5 +1,10 @@
 import java.util.Hashtable;
-import java.util.Scanner;
+
+/**
+ * Player - keeps information on players in game as well as allow for
+ * attack, ability, and item functions.
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
+ */
 
 public class Player implements Creature{
     //status 0 is default, 1 is dead. Room for more types later.
@@ -15,6 +20,13 @@ public class Player implements Creature{
     private int initiativeMod;
     private boolean abilityUsed;
 
+    /**
+     * Constructor -
+     * initializes non-class specific player attributes and calls set classStats.
+     * @param name - name of player
+     * @param playerClass - class of player
+     */
+
     public Player(String name, int playerClass){
         status = 0;
         this.name = name;
@@ -28,6 +40,7 @@ public class Player implements Creature{
         this("John", 1);
     }
 
+    //getter methods
     @Override
     public String getName() {
         return name;
@@ -46,6 +59,11 @@ public class Player implements Creature{
         return status;
     }
 
+    public boolean isAbilityUsed() {
+        return abilityUsed;
+    }
+
+    //setter methods
     public void setHealth(int health) {
         this.health = health;
     }
@@ -57,6 +75,16 @@ public class Player implements Creature{
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setAbilityUsed(boolean abilityUsed) {
+        this.abilityUsed = abilityUsed;
+    }
+    /**
+     * setClassStats - initializes class specific player attributes
+     * 1 = fighter
+     * 2 = cleric
+     * 3 = sorcerer
+     */
     public void setClassStats(){
         if(playerClass == 1){
             maxHealth = 30;
@@ -81,10 +109,18 @@ public class Player implements Creature{
         }
     }
 
+    /**
+     * updates player status
+     * @param status - status of player
+     */
     public void updateStatus(int status){
         this.status = status;
     }
 
+    /**
+     * updates player health and updates status if they die.
+     * @param damage - health to either heal player by or take away from player
+     */
     public void updateHealth(int damage){
         health = health - damage;
         if(health <= 0){
@@ -95,10 +131,20 @@ public class Player implements Creature{
             health = maxHealth;
         }
     }
+
+    /**
+     * picks up item and puts it in back
+     * @param item - the item to pick up
+     */
     public void pickItem(Item item){
         backpack.put(item.getType(), item);
     }
 
+    /**
+     * uses the item corresponding to the given key and removes it from backpack if it is out of charges
+     * @param key - key of the Item to use
+     * @return - returns false if the player doesn't have the item and true if it is used
+     */
     public boolean useItem(String key) {
         if(!backpack.containsKey(key)) {
             return false;
@@ -117,6 +163,12 @@ public class Player implements Creature{
         return true;
     }
 
+    /**
+     * does the corresponding attack depending on class type
+     * @param ac - the armor class of the target being attacked
+     * @return int - the amount of damage dealt. 0 if attack misses.
+     */
+    @Override
     public int attack(int ac){
         int attackRoll = Dice.rollD20(1, attackMod);
         int damageRoll = 0;
@@ -131,6 +183,7 @@ public class Player implements Creature{
         }
         return damageRoll;
     }
+    // Functions for different weapon types.
     private int sword(){
         return Dice.rollD8(1, attackMod);
     }
@@ -142,14 +195,10 @@ public class Player implements Creature{
         return Dice.rollD10(1, attackMod);
     }
 
-    public void setAbilityUsed(boolean abilityUsed) {
-        this.abilityUsed = abilityUsed;
-    }
-
-    public boolean isAbilityUsed() {
-        return abilityUsed;
-    }
-
+    /**
+     * uses the ability corresponding to the player class if a charge is available
+     * @return the damage dealt or health healed by ability
+     */
     public int useAbility(){
         int hp = 0;
         if(playerClass == 1 && !abilityUsed){
@@ -165,10 +214,15 @@ public class Player implements Creature{
         return hp;
     }
 
+    /**
+     * rolls initiative for player
+     * @return - initiative value
+     */
     @Override
     public int rollInitiative() {
         return Dice.rollD20(1, initiativeMod);
     }
+
 
     @Override
     public int attackPlayer(int players) {

@@ -1,5 +1,6 @@
 /* Dice - Simulates rolling of dice.
  * has static methods for d 4,6,8,10,12,20,100.
+ * @author Evelyn Totman
  */
 
 public class Dice {

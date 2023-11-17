@@ -1,5 +1,6 @@
-/* Zombie - most basic enemy type.
+/** Zombie - most basic enemy type.
  *  Zombie has higher health but deals low damage and is very easy to hit
+ *  @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
 public class Zombie extends Enemy{
     private String name;
@@ -48,6 +49,10 @@ public class Zombie extends Enemy{
         return Dice.rollD20(1, -1);
     }
 
+    /**
+     * returns name of the creature
+     * @return String - creatures name.
+     */
     @Override
     public String getName() {
         return name;

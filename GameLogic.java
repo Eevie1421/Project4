@@ -1,5 +1,6 @@
-/* GameLogic - implements functionality for all steps of GameLogic
+/** GameLogic - implements functionality for all steps of GameLogic
  * Connects peripheral classes with gui.
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
 import javax.swing.*;
 import java.awt.event.*;

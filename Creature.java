@@ -1,5 +1,6 @@
-/* Creature - creatures are anything that has the ability to participate in combat
+/** Creature - creatures are anything that has the ability to participate in combat
  * players, mobs, etc.
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
 public interface Creature {
     //Creatures immplementing interface will have an armor class to return which decides how hard they are to hit
@@ -10,8 +11,8 @@ public interface Creature {
     String getName();
     //rollInitiative returns a value based on the individual creature that decides turn order in combat
     int rollInitiative();
-    //
+    //logic for deciding targets
     int attackPlayer(int players);
-    //che
+    //checks if creature is alive
     boolean isALive();
 }

@@ -1,5 +1,6 @@
-/* Combat Panel
- * - Panel for combat
+/** Combat Panel
+ * - handles the gui needed for combat
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,10 @@ public class CombatPanel extends JPanel  implements GamePanel{
     private JButton moveButton;
 
 
+    /**
+     * initializes the combat panel in its precombat state
+     * @param players - array of players from gamelogic
+     */
     public CombatPanel(Player[] players){
         player1 = new playerPanel(players[0].getName());
         player2 = new playerPanel(players[1].getName());
@@ -288,6 +293,9 @@ public class CombatPanel extends JPanel  implements GamePanel{
         return player1.inCombat && player2.inCombat && player3.inCombat && player4.inCombat;
     }
 
+    /**
+     * JPanel for holding Swing components for each individual player
+     */
     private static class playerPanel extends JPanel{
         private JTextArea playerName;
         private JButton attack;

@@ -3,16 +3,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-
 /**
  * A simple Panel that displays a message.
- * @author Jonathan Murphy
+ * @author Evelyn Totman, Salim Jday, Jonathan Murphy
  */
 public class EndPanel extends JPanel implements GamePanel{
     private JTextArea message;
     private JButton newGame;
     private JButton quit;
 
+    /**
+     * Main Constructor. Creates a JPanel with a message and 2 buttons.
+     * @param gameWon boolean determining which message is displayed
+     */
     public EndPanel(boolean gameWon) {
         setPreferredSize(new Dimension(800, 800));
         if (gameWon) {
@@ -38,24 +41,39 @@ public class EndPanel extends JPanel implements GamePanel{
         c.gridx = 1;
         add(quit, c);
     }
-
+    /**
+     * Default Constructor, passes 'true' boolean to the Main Constructor
+     */
     public EndPanel(){
         this(true);
     }
 
+    /**
+     * activates panel
+     * @param a - action listener
+     * @param e - item listener
+     * @param players - players
+     */
     @Override
     public void activatePanel(ActionListener a, ItemListener e, Player[] players) {
         newGame.addActionListener(a);
+        quit.addActionListener(a);
     }
 
+    /**
+     * actionSignal - Returns 1 for now. later will have restart game functionality
+     * @param e - action event
+     * @return - returns 1.
+     */
     @Override
     public int actionSignal(ActionEvent e) {
-        if(e.getSource().equals(quit)){
-            return -1;
-        }
         return 1;
     }
 
+    /**
+     * sets the text box
+     * @param s - text to set it to.
+     */
     @Override
     public void setText(String s) {
         message.setText(s);

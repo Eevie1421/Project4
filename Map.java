@@ -1,31 +1,20 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/**
+ * Creates a HashMap containing Room objects with pointers representing the keys of other Rooms.
+ * The resulting object acts as a traversable map for players to advance through.
+ * @author Jonathan Murphy, Evelyn Totman, Salim Jday
+ */
 public class Map {
     //Attributes
     private HashMap<Integer, Room> rooms;
     private ArrayList<Integer> keys;
     //Methods
     /**
-     * Constructor. Creates a default map of Room objects complete with pointers and types.
+     * Constructor. Creates a default map of Room objects complete with pointers and types then calls setMap
      */
     public Map() {//build preset map
 
-        /*rooms = new HashMap<>(27);//Room types: 0=start, 1=combat, 2=objective, 3=item, 4=heal, 5=boss, 6==end
-        rooms.put(0, new Room("Start",null, 1, null, null, 0));
-        rooms.put(1, new Room("Combat1", 0, null, 2, 3, 1));
-        rooms.put(2, new Room("Combat2", 1, null, null, 4, 1));
-        rooms.put(3, new Room("Objective1", 1, 5, null, null, 2));
-        rooms.put(4, new Room("Item1", 2, null, null, null, 3));
-        rooms.put(5, new Room("Heal1", 3, 8, 7, 6, 4));
-        rooms.put(6, new Room("Combat3", 5, 9, null, null, 1));
-        rooms.put(7, new Room("Combat4", 5, 10, null, null, 1));
-        rooms.put(8, new Room("Combat5", 5, 11, null, null, 1));
-        rooms.put(9, new Room("Item2", 6, null, null, null, 3));
-        rooms.put(10, new Room("Heal2", 7, null, null, null, 4));
-        rooms.put(11, new Room("Boss", 8, null, 12, null, 5));
-        rooms.put(12, new Room("Exit", 11, null, null, null, 6));
-         */
 
         rooms = new HashMap<>(27);
         keys = new ArrayList<>();
@@ -84,7 +73,6 @@ public class Map {
 
         setMap();
     }
-
     /**
      * Initializes all the pointers for the room map
      */
@@ -141,10 +129,13 @@ public class Map {
         bffr.setBack(keys.get(11));
     }
 
+    /**
+     * Basic getter.
+     * @return attribute ArrayList<Integer> keys
+     */
     public ArrayList<Integer> getKeys() {
         return keys;
     }
-
     /**
      * Returns a Room from the map corresponding to the Integer key.
      * @param i Integer representing Map key
@@ -156,5 +147,4 @@ public class Map {
         }
         return null;
     }
-
 }
