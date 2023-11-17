@@ -38,7 +38,7 @@ public class GameLogic implements ActionListener, ItemListener {
         currentRoom = map.getRoom(map.getKeys().get(0));
         panelMap = new Hashtable<>(27);
         Room temp;
-        for(int i = 0; i < 12; i++){
+        for(int i = 0; i < 13; i++){
             int key = map.getKeys().get(i);
             temp = map.getRoom(key);
             if(temp.getType() == 0){
