@@ -15,7 +15,7 @@ public class Zombie extends Enemy{
      */
     @Override
     public int attackPlayer(int players) {
-        return (int)(Math.random()*(players-1));
+        return (int)(Math.random()*(players));
     }
 
     @Override
@@ -39,6 +39,10 @@ public class Zombie extends Enemy{
         return damageRoll;
     }
 
+    /**
+     * rollInitiative - Rolls for turn order.
+     * @return int - rolls for initiative with -1 modifier.
+     */
     @Override
     public int rollInitiative() {
         return Dice.rollD20(1, -1);

@@ -41,49 +41,49 @@ public class Dice {
     public static int rollD4(int number, int modifier){
         int val = 0;
         for(int i = 0; i < number; i++){
-            val = val + modifier + (int)(1 + Math.random() * 3);
+            val = val + modifier + (int)(1 + Math.random() * 4);
         }
         return val;
     }
     public static int rollD6(int number, int modifier){
         int val = 0;
         for(int i = 0; i < number; i++){
-            val = val + modifier + (int)(1 + Math.random() * 5);
+            val = val + modifier + (int)(1 + Math.random() * 6);
         }
         return val;
     }
     public static int rollD8(int number, int modifier){
         int val = 0;
         for(int i = 0; i < number; i++){
-            val = val + modifier + (int)(1 + Math.random() * 7);
+            val = val + modifier + (int)(1 + Math.random() * 8);
         }
         return val;
     }
     public static int rollD10(int number, int modifier){
         int val = 0;
         for(int i = 0; i < number; i++){
-            val = val + modifier + (int)(1 + Math.random() * 9);
+            val = val + modifier + (int)(1 + Math.random() * 10);
         }
         return val;
     }
     public static int rollD12(int number, int modifier){
         int val = 0;
         for(int i = 0; i < number; i++){
-            val = val + modifier + (int)(1 + Math.random() * 11);
+            val = val + modifier + (int)(1 + Math.random() * 12);
         }
         return val;
     }
     public static int rollD20(int number, int modifier){
         int val = 0;
         for(int i = 0; i < number; i++){
-            val = val + modifier + (int)(1 + Math.random() * 19);
+            val = val + modifier + (int)(1 + Math.random() * 20);
         }
         return val;
     }
     public static int rollD100(int number, int modifier){
         int val = 0;
         for(int i = 0; i < number; i++){
-            val = val + modifier + (int)(1 + Math.random() * 99);
+            val = val + modifier + (int)(1 + Math.random() * 100);
         }
         return val;
     }

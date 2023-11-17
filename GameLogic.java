@@ -1,8 +1,7 @@
-/*
- *
+/* GameLogic - implements functionality for all steps of GameLogic
+ * Connects peripheral classes with gui.
  */
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -21,7 +20,6 @@ public class GameLogic implements ActionListener, ItemListener {
     private LinkedList<Creature> combat;
     private ArrayList<Enemy> enemies;
     private int[] initiative;
-    private int turn;
 
     public GameLogic() {
 
@@ -38,6 +36,7 @@ public class GameLogic implements ActionListener, ItemListener {
         currentRoom = map.getRoom(map.getKeys().get(0));
         panelMap = new Hashtable<>(27);
         Room temp;
+        //links rooms to a panel corresponding to their type.
         for(int i = 0; i < 13; i++){
             int key = map.getKeys().get(i);
             temp = map.getRoom(key);
@@ -65,6 +64,9 @@ public class GameLogic implements ActionListener, ItemListener {
         startGame();
     }
 
+    /**
+     * adds the gameStartPanel and makes it visible
+     */
     private void startGame(){
         currentPanel.activatePanel(this, this, players);
         gui.add((JPanel) currentPanel);
@@ -72,6 +74,9 @@ public class GameLogic implements ActionListener, ItemListener {
         gui.setVisible(true);
     }
 
+    /**
+     * Adds enemies and players to combat deque in order of their initiative values than calls takeNextTurn to initiate combat.
+     */
     private void startCombat(){
         initiative[4] = enemies.get(0).rollInitiative();
         int first = 0;
@@ -145,7 +150,7 @@ public class GameLogic implements ActionListener, ItemListener {
     }
 
     /**
-     *
+     * takeNextTurn - takes the next turn and updates the gui correspondingly.
      */
     private void takeNextTurn(){
         if(!combat.isEmpty()){
@@ -160,6 +165,7 @@ public class GameLogic implements ActionListener, ItemListener {
                 }
             }
             else{
+                //Enemy turn functionality.
                 if(temp.isALive()){
                     int alivePlayers = 0;
                     for (Player p: players) {
@@ -168,6 +174,7 @@ public class GameLogic implements ActionListener, ItemListener {
                         }
                     }
                     int playerAttacked = temp.attackPlayer(alivePlayers);
+                    // - val corresponds to an aoe attack
                     if(playerAttacked < 0) {
                         int damage = temp.attack(0);
                         currentPanel.setText("AOE attack add text later " + damage);
@@ -214,9 +221,12 @@ public class GameLogic implements ActionListener, ItemListener {
         }
     }
 
+    /**
+     * sets program back to initial state prior to combat.
+     */
     private void endCombat(){
         while (!combat.isEmpty()){
-            Creature temp = combat.poll();
+            combat.poll();
         }
         enemies = new ArrayList<>();
         for(Player p : players){
@@ -233,16 +243,29 @@ public class GameLogic implements ActionListener, ItemListener {
         currentRoom.setCleared(true);
     }
 
+    /**
+     * endGame - brings up the end panel.
+     * @param gameWon - true if the game is successfully completed. false if lost
+     */
     private void endGame(boolean gameWon){
         gui.remove((JPanel) currentPanel);
         currentPanel = new EndPanel(gameWon);
         currentPanel.activatePanel(this, this, players);
         gui.add((JPanel)currentPanel);
     }
+
+    /**
+     * checkPlayers - checks if players are alive
+     * @return - true if there is any alive players. false if everyone is dead.
+     */
     private boolean checkPlayers(){
         return (players[0] != null && players[0].isALive()) || (players[1] != null && players[1].isALive()) || (players[2] != null && players[3].isALive()) || (players[3] != null && players[3].isALive());
     }
 
+    /**
+     * moveRooms - moves into the room corresponding to the key and updates the GUI
+     * @param i - key corresponding to the target room
+     */
     private void moveRooms(Integer i){
         gui.remove((JPanel) currentPanel);
         currentRoom.setCleared(true);
@@ -262,13 +285,17 @@ public class GameLogic implements ActionListener, ItemListener {
         move.setVisible(false);
     }
 
-
+    /**
+     * actionPerformed - implements ActionListener method
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         //If signal comes from move panel move into corresponding room if it isn't locked.
         if(movePanel.contains(e.getSource()) && moving){
             int moveSignal = movePanel.moveSignal(e);
             boolean locked = false;
+            //if room is locked check players for a key. if one is found unlock room.
             if(map.getRoom(moveSignal).isLocked()){
                 locked = true;
                 for(Player p : players){
@@ -289,6 +316,7 @@ public class GameLogic implements ActionListener, ItemListener {
                 move.setVisible(false);
             }
         }
+        //gets a signal from the current panel which will indicate function to be performed.
         int signal;
         signal = currentPanel.actionSignal(e);
         //Opens move panel if signal is 0.
@@ -300,6 +328,7 @@ public class GameLogic implements ActionListener, ItemListener {
             move.revalidate();
             move.setVisible(true);
         }
+        //GameStartPanel returns 1 to start game.
         else if(currentPanel.getClass().isInstance(new GameStartPanel())){
             if(signal == 1){
                 GameStartPanel temp = (GameStartPanel) currentPanel;
@@ -319,6 +348,7 @@ public class GameLogic implements ActionListener, ItemListener {
                 takeNextTurn();
             }
             if(signal < 0){
+                //negative signal corresponds to initiative.
                 if(signal == -1){
                     initiative[0] = players[0].rollInitiative();
                 }
@@ -337,6 +367,10 @@ public class GameLogic implements ActionListener, ItemListener {
                 if(combat.peek() != null && !combat.peek().getClass().isInstance(new Player())){
                     return;
                 }
+                //takes the next player in the queue for combat and performs action corresponding to signal.
+                //1 - attack signal
+                //2 - ability signal
+                //3 - item signal
                 Player currentPlayer = (Player) combat.poll();
                 if(signal == 1){
                     int i = 0;
@@ -415,6 +449,7 @@ public class GameLogic implements ActionListener, ItemListener {
             }
         }
         else if(currentPanel.getClass().isInstance(new SanctuaryPanel())){
+            //signal is = to 1 + player num.
             if(signal > 0){
                 signal--;
                 int heal = -1 * Dice.rollD12(1, 0);
@@ -477,13 +512,15 @@ public class GameLogic implements ActionListener, ItemListener {
             }
         }
         else if(currentPanel.getClass().isInstance(new EndPanel())){
-            if(signal == 1){
-                new GameLogic();
-            }
+           //placeholder for adding new game. right now just exits game
             gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         }
     }
 
+    /**
+     * implements ItemListener method for GameStartPanel classPanel.
+     * @param e the event to be processed
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
         if(currentPanel.getClass().isInstance(new GameStartPanel())){
