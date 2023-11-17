@@ -1,3 +1,4 @@
+
 /** GameLogic - implements functionality for all steps of GameLogic
  * Connects peripheral classes with gui.
  * @author Evelyn Totman, Salim Jday, Jonathan Murphy
@@ -529,6 +530,4 @@ public class GameLogic implements ActionListener, ItemListener {
             temp.updateClassPanel(e);
         }
     }
-
-
 }

@@ -1,3 +1,4 @@
+
 /** Boss - Boss is the class setup to hold the strongest enemy type
  * Boss has a higher health than other enemy types as well as the ability to perform an aoe attack.
  * @author Evelyn Totman, Salim Jday, Jonathan Murphy
@@ -64,6 +65,5 @@ public class Boss extends Enemy{
     public String getName() {
         return name;
     }
-
 
 }
